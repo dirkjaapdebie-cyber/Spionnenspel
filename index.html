@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>OPERATIE MEESTERSPION</title>
+    <style>
+        body { background: #000; color: #ccc; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
+        .page { display: none; } .active { display: block; }
+        h1 { color: #8b0000; text-transform: uppercase; }
+        input, select { background: #111; border: 1px solid #444; color: #fff; padding: 10px; margin: 5px; }
+        button { background: #8b0000; color: #fff; border: none; padding: 10px 20px; cursor: pointer; }
+        table { border-collapse: collapse; width: 90%; margin: 20px auto; border: 1px solid #333; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: center; }
+        .clickable { cursor: pointer; height: 30px; font-weight: bold; font-size: 1.2em; }
+        .check { color: #38a169; } .cross { color: #e53e3e; }
+        #chat-container { border: 1px solid #444; height: 200px; overflow-y: scroll; margin: 20px auto; width: 90%; background: #0a0a0a; text-align: left; padding: 10px; }
+    </style>
+</head>
+<body>
 
+<div id="p1" class="page active">
+    <h1>OPERATIE MEESTERSPION</h1>
+    <input type="text" id="user" placeholder="Codenaam...">
+    <br><button onclick="start()">START MISSIE</button>
+    <audio id="music" src="https://cdn2.suno.ai/qeyh1FzYIdYQJI7D.mp3" loop></audio>
+</div>
+
+<div id="p2" class="page">
+    <h1>MEESTERSPION MATRIX</h1>
+    <table>
+        <thead><tr><th>Naam</th><th>Codenaam</th><th>Code</th><th>Voorwerp</th><th>Locatie</th></tr></thead>
+        <tbody id="matrix"></tbody>
+    </table>
+    
+    <div id="chat-container"><div id="messages"></div></div>
+    <select id="recipient-select">
+        <option value="iedereen">Iedereen</option>
+        <option value="Miriam">Miriam</option><option value="DirkJaap">DirkJaap</option>
+        <option value="Hannah">Hannah</option><option value="Tommie">Tommie</option>
+        <option value="Joshua">Joshua</option><option value="Judith">Judith</option>
+        <option value="Micha">Micha</option><option value="Annewil">Annewil</option>
+    </select>
+    <input type="text" id="msg-input" placeholder="Bericht...">
+    <button onclick="sendMessage()">VERSTUUR</button>
+    <audio id="pling" src="https://actions.google.com/sounds/v1/notifications/beep_short.ogg"></audio>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDDBMeg_s2f7V3nUA9d0CV0Vc_ytYz0ycs",
+        authDomain: "jezusendeman.firebaseapp.com",
+        databaseURL: "https://jezusendeman-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "jezusendeman",
+        storageBucket: "jezusendeman.firebasestorage.app",
+        messagingSenderId: "196835530316",
+        appId: "1:196835530316:web:629233a75171950b2a86e9"
+    };
+
+    const db = getDatabase(initializeApp(firebaseConfig));
+    const messagesRef = ref(db, 'chat');
+
+    window.sendMessage = () => {
+        const input = document.getElementById('msg-input');
+        push(messagesRef, { sender: document.getElementById('user').value, recipient: document.getElementById('recipient-select').value, text: input.value });
+        input.value = "";
+    };
+
+    onChildAdded(messagesRef, (data) => {
+        const msg = data.val();
+        const currentUser = document.getElementById('user').value;
+        if (msg.recipient === currentUser || msg.sender === currentUser || msg.recipient === "iedereen") {
+            const div = document.createElement('div');
+            div.innerHTML = `<b>${msg.sender} ➔ ${msg.recipient}:</b> ${msg.text}`;
+            document.getElementById('messages').appendChild(div);
+            document.getElementById('pling').play();
+        }
+    });
+</script>
+
+<script>
+    const namen = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
+    const tbody = document.getElementById('matrix');
+    namen.forEach(n => {
+        let row = `<tr><td style="font-weight:bold">${n}</td>`;
+        for(let i=0; i<4; i++) row += `<td class="clickable" onclick="toggle(this)"></td>`;
+        tbody.innerHTML += row + `</tr>`;
+    });
+
+    function toggle(c) {
+        c.innerHTML = (c.innerHTML === "") ? "✓" : (c.innerHTML === "✓" ? "✗" : "");
+        c.className = "clickable " + (c.innerHTML === "✓" ? "check" : (c.innerHTML === "✗" ? "cross" : ""));
+    }
+
+    function start() {
+        document.getElementById('music').play();
+        document.getElementById('p1').style.display = 'none';
+        document.getElementById('p2').style.display = 'block';
+    }
+</script>
+</body>
+</html>
