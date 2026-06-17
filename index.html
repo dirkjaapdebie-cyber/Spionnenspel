@@ -4,80 +4,90 @@
     <meta charset="UTF-8">
     <title>OPERATIE MEESTERSPION</title>
     <style>
-        :root { --dark: #121212; --blood: #8b0000; --text: #d1d1d1; }
-        body { background-color: var(--dark); color: var(--text); font-family: 'Courier New', monospace; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .page { display: none; text-align: center; width: 90%; max-width: 800px; }
+        body { background: #000; color: #ccc; font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-align: center; }
+        .page { display: none; }
         .active { display: block; }
-        input { background: #222; border: 1px solid var(--blood); color: white; padding: 10px; width: 200px; text-align: center; }
-        button { background: var(--blood); color: white; border: none; padding: 10px 20px; cursor: pointer; margin-top: 10px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #444; padding: 8px; }
-        input.header-input { background: transparent; color: white; border: none; width: 90%; font-weight: bold; text-align: center; }
-        #timer { font-size: 2em; color: var(--blood); margin: 20px 0; }
+        h1 { color: #8b0000; text-transform: uppercase; letter-spacing: 2px; }
+        input { background: #111; border: 1px solid #444; color: #fff; padding: 10px; margin: 10px; text-align: center; }
+        button { background: #8b0000; color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        table { border-collapse: collapse; width: 100%; max-width: 800px; margin: 20px auto; border: 1px solid #333; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: center; }
+        th { background: #1a1a1a; font-size: 0.8em; }
+        .clickable { cursor: pointer; height: 30px; font-weight: bold; }
+        .check { color: #38a169; }
+        .cross { color: #e53e3e; }
+        #timer { font-size: 2.5em; color: #8b0000; margin: 20px 0; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<!-- PAGINA 1: LOGIN -->
 <div id="p1" class="page active">
     <h1>OPERATIE MEESTERSPION</h1>
-    <p>Voer je codenaam in om het dossier te openen.</p>
-    <input type="text" id="username" placeholder="Codenaam...">
+    <p>Identificatie vereist.</p>
+    <input type="text" id="user" placeholder="Geef je codenaam...">
     <br>
-    <button onclick="startMission()">START MISSIE</button>
-    <audio id="bgm" src="https://cdn2.suno.ai/mf6NVMMhVW5F8XTL.mp3" loop></audio>
+    <button onclick="start()">START MISSIE</button>
+    <audio id="music" src="https://cdn2.suno.ai/mf6NVMMhVW5F8XTL.mp3" loop></audio>
 </div>
 
-<!-- PAGINA 2: SPELREGELS & MATRIX -->
 <div id="p2" class="page">
-    <h1>DE MISSIE</h1>
-    <div style="text-align: left; background: #1a1a1a; padding: 20px; border-left: 5px solid var(--blood);">
-        <h2>Spelregels:</h2>
-        <p>1. Je hebt een paspoort met cruciale data. De rest is in handen van je collega-spionnen.</p>
-        <p>2. Deel, ondervraag, ruil. <b>Alles is toegestaan</b> om de waarheid boven tafel te krijgen.</p>
-        <p>3. Vul je bevindingen in de onderstaande matrix in.</p>
-        <p><b>Doel:</b> Verwerk alle informatie in de kortste tijd. De snelste spion wordt uitgeroepen tot <b>MEESTERSPION</b>.</p>
-    </div>
-
+    <h1>LOGIKWIS MATRIX: MEESTERSPION</h1>
     <div id="timer">00:00</div>
-
     <table>
         <thead>
             <tr>
-                <th>Naam</th>
-                <th><input class="header-input" value="Codenaam"></th>
-                <th><input class="header-input" value="Code"></th>
-                <th><input class="header-input" value="Voorwerp"></th>
-                <th><input class="header-input" value="Locatie"></th>
+                <th>Echte Naam</th>
+                <th>Codenaam</th>
+                <th>Geheime Code</th>
+                <th>Voorwerp</th>
+                <th>Locatie</th>
             </tr>
         </thead>
-        <tbody id="matrix-body"></tbody>
+        <tbody id="matrix"></tbody>
     </table>
 </div>
 
 <script>
-    function startMission() {
-        document.getElementById('bgm').play();
+    function start() {
+        document.getElementById('music').play();
         document.getElementById('p1').classList.remove('active');
         document.getElementById('p2').classList.add('active');
-        startTimer();
+        runTimer();
     }
 
-    // Matrix genereren
-    const names = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
-    const tbody = document.getElementById('matrix-body');
-    names.forEach(n => {
-        tbody.innerHTML += `<tr><td>${n}</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>`;
+    const namen = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
+    const tbody = document.getElementById('matrix');
+    
+    // Matrix opbouwen met de clickable Logikwis-logica
+    namen.forEach(n => {
+        let row = `<tr><td>${n}</td>`;
+        for(let i=0; i<4; i++) {
+            row += `<td class="clickable" onclick="toggle(this)"></td>`;
+        }
+        row += `</tr>`;
+        tbody.innerHTML += row;
     });
 
-    // Timer
-    let seconds = 0;
-    function startTimer() {
+    function toggle(cell) {
+        if (cell.innerHTML === "") {
+            cell.innerHTML = "✓";
+            cell.className = "clickable check";
+        } else if (cell.innerHTML === "✓") {
+            cell.innerHTML = "✗";
+            cell.className = "clickable cross";
+        } else {
+            cell.innerHTML = "";
+            cell.className = "clickable";
+        }
+    }
+
+    let s = 0;
+    function runTimer() {
         setInterval(() => {
-            seconds++;
-            let mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-            let secs = (seconds % 60).toString().padStart(2, '0');
-            document.getElementById('timer').innerText = `${mins}:${secs}`;
+            s++;
+            let m = Math.floor(s/60).toString().padStart(2, '0');
+            let sec = (s%60).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${m}:${sec}`;
         }, 1000);
     }
 </script>
