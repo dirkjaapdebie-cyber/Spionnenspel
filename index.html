@@ -2,9 +2,25 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meesterspion: Dynamische Matrix</title>
     <style>
-        /* ... (behoud je bestaande CSS) ... */
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --border-color: #334155;
+            --border-thick: #64748b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #38bdf8;
+            --atomic-cyan: #22d3ee;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
         .header-input {
             width: 80px;
             background: #0f172a;
@@ -12,45 +28,66 @@
             border: 1px solid var(--border-thick);
             text-align: center;
             font-size: 8pt;
-            padding: 2px;
+            padding: 4px;
+            text-transform: uppercase;
         }
+
+        .matrix-container { overflow-x: auto; max-width: 100%; background: var(--panel-bg); padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); margin-bottom: 25px; }
+        table { border-collapse: collapse; margin: 0 auto; }
+        th { font-size: 10pt; font-weight: 600; color: var(--text-muted); background-color: #111827; }
+        th.cat-header { padding: 8px; border: 2px solid var(--border-thick); text-transform: uppercase; font-size: 9pt; color: var(--accent-blue); }
+        th.rotate { height: 130px; vertical-align: bottom; padding: 5px; border: 1px solid var(--border-color); }
+        th.rotate > div { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; white-space: nowrap; width: 34px; }
+        td.row-cat-header { background-color: #111827; color: var(--accent-blue); writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-weight: bold; border: 2px solid var(--border-thick); width: 30px; }
+        td.row-label { background-color: #111827; color: var(--text-color); padding: 0 12px; font-size: 10pt; text-align: right; border: 1px solid var(--border-color); height: 36px; }
+        .grid-cell { width: 36px; height: 36px; border: 1px solid var(--border-color); cursor: pointer; text-align: center; background-color: #1e293b; user-select: none; }
+        .grid-cell[data-state="check"] { background-color: rgba(16, 185, 129, 0.1); }
+        .grid-cell[data-state="check"]::before { content: "✓"; color: var(--accent-green); font-size: 16pt; }
+        .grid-cell[data-state="cross"] { background-color: rgba(239, 68, 68, 0.05); }
+        .grid-cell[data-state="cross"]::before { content: "✗"; color: var(--accent-red); }
+        .blackout { background-color: #090d16; cursor: not-allowed; }
+        .btn-validate { background-color: var(--accent-blue); color: #0f172a; border: none; padding: 12px 30px; font-weight: bold; cursor: pointer; border-radius: 6px; }
     </style>
 </head>
 <body>
 
-<header>
+<header style="text-align:center; margin-bottom: 20px;">
     <h1>🕵️‍♂️ LOGIKWIS MATRIX: MEESTERSPION</h1>
-    <p class="instructions">Vul eerst de gevonden informatie uit de interviews in de headers in. Daarna kun je de vinkjes zetten!</p>
+    <p>Vul de headers in na de interviews en los de matrix op.</p>
 </header>
 
 <div class="matrix-container">
     <table id="logic-matrix">
         <thead>
             <tr>
-                <th colspan="2" rowspan="2" style="background: transparent;"></th>
-                <th colspan="8" class="cat-header">
-                    <input type="text" class="header-input" placeholder="Codenaam?">
-                </th>
-                <th colspan="8" class="cat-header">
-                    <input type="text" class="header-input" placeholder="Code?">
-                </th>
-                </tr>
-            </thead>
+                <th colspan="2" rowspan="2" style="background:transparent; border:none;"></th>
+                <th colspan="8" class="cat-header">Codenaam</th>
+                <th colspan="8" class="cat-header">Geheime Code</th>
+                <th colspan="8" class="cat-header">Voorwerp</th>
+                <th colspan="8" class="cat-header">Locatie</th>
+            </tr>
+            <tr>
+                <script>for(let i=0; i<32; i++) document.write('<th class="rotate"><div><input type="text" class="header-input" placeholder="???"></div></th>');</script>
+            </tr>
+        </thead>
         <tbody>
-            </tbody>
+            <script>
+                const rowLabels = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
+                rowLabels.forEach((label, idx) => {
+                    document.write(`<tr>${idx === 0 ? '<td rowspan="8" class="row-cat-header">Echte Naam</td>' : ''}<td class="row-label">${label}</td>`);
+                    for(let j=0; j<32; j++) {
+                        document.write('<td class="grid-cell" data-state="empty" onclick="this.setAttribute(\'data-state\', this.getAttribute(\'data-state\') === \'empty\' ? \'check\' : this.getAttribute(\'data-state\') === \'check\' ? \'cross\' : \'empty\')"></td>');
+                    }
+                    document.write('</tr>');
+                });
+            </script>
+        </tbody>
     </table>
 </div>
 
-<script>
-    // In de verifyMatrix functie kun je nu toevoegen:
-    function verifyMatrix() {
-        const inputs = document.querySelectorAll('.header-input');
-        // Controleer of de ingevulde teksten overeenkomen met de geheime lijst
-        // Bijv: if (inputs[0].value.toLowerCase() === 'agent vodka') { ... }
-        
-        // Daarna pas de logica voor de vinkjes (✓) checken
-    }
-</script>
+<div style="text-align: center;">
+    <button class="btn-validate" onclick="alert('Matrix ingevuld? Verifieer handmatig of gebruik de logica voor automatische controle.')">Controleer Systeem</button>
+</div>
 
 </body>
 </html>
