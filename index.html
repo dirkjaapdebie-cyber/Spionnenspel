@@ -2,92 +2,62 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meesterspion: Dynamische Matrix</title>
+    <title>Logikwis Matrix - Meesterspion</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --panel-bg: #1e293b;
-            --border-color: #334155;
-            --border-thick: #64748b;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-blue: #38bdf8;
-            --atomic-cyan: #22d3ee;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        
-        .header-input {
-            width: 80px;
-            background: #0f172a;
-            color: var(--accent-blue);
-            border: 1px solid var(--border-thick);
-            text-align: center;
-            font-size: 8pt;
-            padding: 4px;
-            text-transform: uppercase;
-        }
-
-        .matrix-container { overflow-x: auto; max-width: 100%; background: var(--panel-bg); padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); margin-bottom: 25px; }
-        table { border-collapse: collapse; margin: 0 auto; }
-        th { font-size: 10pt; font-weight: 600; color: var(--text-muted); background-color: #111827; }
-        th.cat-header { padding: 8px; border: 2px solid var(--border-thick); text-transform: uppercase; font-size: 9pt; color: var(--accent-blue); }
-        th.rotate { height: 130px; vertical-align: bottom; padding: 5px; border: 1px solid var(--border-color); }
-        th.rotate > div { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; white-space: nowrap; width: 34px; }
-        td.row-cat-header { background-color: #111827; color: var(--accent-blue); writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-weight: bold; border: 2px solid var(--border-thick); width: 30px; }
-        td.row-label { background-color: #111827; color: var(--text-color); padding: 0 12px; font-size: 10pt; text-align: right; border: 1px solid var(--border-color); height: 36px; }
-        .grid-cell { width: 36px; height: 36px; border: 1px solid var(--border-color); cursor: pointer; text-align: center; background-color: #1e293b; user-select: none; }
-        .grid-cell[data-state="check"] { background-color: rgba(16, 185, 129, 0.1); }
-        .grid-cell[data-state="check"]::before { content: "✓"; color: var(--accent-green); font-size: 16pt; }
-        .grid-cell[data-state="cross"] { background-color: rgba(239, 68, 68, 0.05); }
-        .grid-cell[data-state="cross"]::before { content: "✗"; color: var(--accent-red); }
-        .blackout { background-color: #090d16; cursor: not-allowed; }
-        .btn-validate { background-color: var(--accent-blue); color: #0f172a; border: none; padding: 12px 30px; font-weight: bold; cursor: pointer; border-radius: 6px; }
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        h1 { color: #333; text-align: center; }
+        .intro { text-align: center; margin-bottom: 20px; color: #555; }
+        table { border-collapse: collapse; margin: 0 auto; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; min-width: 80px; }
+        th { background: #e0e0e0; font-weight: bold; }
+        .clickable { cursor: pointer; font-size: 1.2em; font-weight: bold; }
+        .clickable:hover { background: #eee; }
+        .check { color: green; }
+        .cross { color: red; }
     </style>
 </head>
 <body>
 
-<header style="text-align:center; margin-bottom: 20px;">
     <h1>🕵️‍♂️ LOGIKWIS MATRIX: MEESTERSPION</h1>
-    <p>Vul de headers in na de interviews en los de matrix op.</p>
-</header>
+    <p class="intro">Vul de headers in uit de paspoort-interviews en klik in het raster om vinkjes (✓) of kruisjes (✗) te plaatsen.</p>
 
-<div class="matrix-container">
-    <table id="logic-matrix">
+    <table id="matrix">
         <thead>
             <tr>
-                <th colspan="2" rowspan="2" style="background:transparent; border:none;"></th>
-                <th colspan="8" class="cat-header">Codenaam</th>
-                <th colspan="8" class="cat-header">Geheime Code</th>
-                <th colspan="8" class="cat-header">Voorwerp</th>
-                <th colspan="8" class="cat-header">Locatie</th>
-            </tr>
-            <tr>
-                <script>for(let i=0; i<32; i++) document.write('<th class="rotate"><div><input type="text" class="header-input" placeholder="???"></div></th>');</script>
+                <th>Echte Naam</th>
+                <th>Codenaam</th>
+                <th>Geheime Code</th>
+                <th>Voorwerp</th>
+                <th>Locatie</th>
             </tr>
         </thead>
         <tbody>
+            <!-- 8 rijen voor de 8 spionnen -->
             <script>
-                const rowLabels = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
-                rowLabels.forEach((label, idx) => {
-                    document.write(`<tr>${idx === 0 ? '<td rowspan="8" class="row-cat-header">Echte Naam</td>' : ''}<td class="row-label">${label}</td>`);
-                    for(let j=0; j<32; j++) {
-                        document.write('<td class="grid-cell" data-state="empty" onclick="this.setAttribute(\'data-state\', this.getAttribute(\'data-state\') === \'empty\' ? \'check\' : this.getAttribute(\'data-state\') === \'check\' ? \'cross\' : \'empty\')"></td>');
+                for(let i=0; i<8; i++) {
+                    document.write('<tr>');
+                    for(let j=0; j<5; j++) {
+                        document.write('<td class="clickable" onclick="toggle(this)"></td>');
                     }
                     document.write('</tr>');
-                });
+                }
             </script>
         </tbody>
     </table>
-</div>
 
-<div style="text-align: center;">
-    <button class="btn-validate" onclick="alert('Matrix ingevuld? Verifieer handmatig of gebruik de logica voor automatische controle.')">Controleer Systeem</button>
-</div>
-
+    <script>
+        function toggle(cell) {
+            if (cell.innerHTML === "") {
+                cell.innerHTML = "✓";
+                cell.className = "clickable check";
+            } else if (cell.innerHTML === "✓") {
+                cell.innerHTML = "✗";
+                cell.className = "clickable cross";
+            } else {
+                cell.innerHTML = "";
+                cell.className = "clickable";
+            }
+        }
+    </script>
 </body>
 </html>
