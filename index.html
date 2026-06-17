@@ -2,62 +2,84 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Logikwis Matrix - Meesterspion</title>
+    <title>OPERATIE MEESTERSPION</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
-        h1 { color: #333; text-align: center; }
-        .intro { text-align: center; margin-bottom: 20px; color: #555; }
-        table { border-collapse: collapse; margin: 0 auto; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; min-width: 80px; }
-        th { background: #e0e0e0; font-weight: bold; }
-        .clickable { cursor: pointer; font-size: 1.2em; font-weight: bold; }
-        .clickable:hover { background: #eee; }
-        .check { color: green; }
-        .cross { color: red; }
+        :root { --dark: #121212; --blood: #8b0000; --text: #d1d1d1; }
+        body { background-color: var(--dark); color: var(--text); font-family: 'Courier New', monospace; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .page { display: none; text-align: center; width: 90%; max-width: 800px; }
+        .active { display: block; }
+        input { background: #222; border: 1px solid var(--blood); color: white; padding: 10px; width: 200px; text-align: center; }
+        button { background: var(--blood); color: white; border: none; padding: 10px 20px; cursor: pointer; margin-top: 10px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #444; padding: 8px; }
+        input.header-input { background: transparent; color: white; border: none; width: 90%; font-weight: bold; text-align: center; }
+        #timer { font-size: 2em; color: var(--blood); margin: 20px 0; }
     </style>
 </head>
 <body>
 
-    <h1>🕵️‍♂️ LOGIKWIS MATRIX: MEESTERSPION</h1>
-    <p class="intro">Vul de headers in uit de paspoort-interviews en klik in het raster om vinkjes (✓) of kruisjes (✗) te plaatsen.</p>
+<!-- PAGINA 1: LOGIN -->
+<div id="p1" class="page active">
+    <h1>OPERATIE MEESTERSPION</h1>
+    <p>Voer je codenaam in om het dossier te openen.</p>
+    <input type="text" id="username" placeholder="Codenaam...">
+    <br>
+    <button onclick="startMission()">START MISSIE</button>
+    <audio id="bgm" src="https://cdn2.suno.ai/mf6NVMMhVW5F8XTL.mp3" loop></audio>
+</div>
 
-    <table id="matrix">
+<!-- PAGINA 2: SPELREGELS & MATRIX -->
+<div id="p2" class="page">
+    <h1>DE MISSIE</h1>
+    <div style="text-align: left; background: #1a1a1a; padding: 20px; border-left: 5px solid var(--blood);">
+        <h2>Spelregels:</h2>
+        <p>1. Je hebt een paspoort met cruciale data. De rest is in handen van je collega-spionnen.</p>
+        <p>2. Deel, ondervraag, ruil. <b>Alles is toegestaan</b> om de waarheid boven tafel te krijgen.</p>
+        <p>3. Vul je bevindingen in de onderstaande matrix in.</p>
+        <p><b>Doel:</b> Verwerk alle informatie in de kortste tijd. De snelste spion wordt uitgeroepen tot <b>MEESTERSPION</b>.</p>
+    </div>
+
+    <div id="timer">00:00</div>
+
+    <table>
         <thead>
             <tr>
-                <th>Echte Naam</th>
-                <th>Codenaam</th>
-                <th>Geheime Code</th>
-                <th>Voorwerp</th>
-                <th>Locatie</th>
+                <th>Naam</th>
+                <th><input class="header-input" value="Codenaam"></th>
+                <th><input class="header-input" value="Code"></th>
+                <th><input class="header-input" value="Voorwerp"></th>
+                <th><input class="header-input" value="Locatie"></th>
             </tr>
         </thead>
-        <tbody>
-            <!-- 8 rijen voor de 8 spionnen -->
-            <script>
-                for(let i=0; i<8; i++) {
-                    document.write('<tr>');
-                    for(let j=0; j<5; j++) {
-                        document.write('<td class="clickable" onclick="toggle(this)"></td>');
-                    }
-                    document.write('</tr>');
-                }
-            </script>
-        </tbody>
+        <tbody id="matrix-body"></tbody>
     </table>
+</div>
 
-    <script>
-        function toggle(cell) {
-            if (cell.innerHTML === "") {
-                cell.innerHTML = "✓";
-                cell.className = "clickable check";
-            } else if (cell.innerHTML === "✓") {
-                cell.innerHTML = "✗";
-                cell.className = "clickable cross";
-            } else {
-                cell.innerHTML = "";
-                cell.className = "clickable";
-            }
-        }
-    </script>
+<script>
+    function startMission() {
+        document.getElementById('bgm').play();
+        document.getElementById('p1').classList.remove('active');
+        document.getElementById('p2').classList.add('active');
+        startTimer();
+    }
+
+    // Matrix genereren
+    const names = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
+    const tbody = document.getElementById('matrix-body');
+    names.forEach(n => {
+        tbody.innerHTML += `<tr><td>${n}</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>`;
+    });
+
+    // Timer
+    let seconds = 0;
+    function startTimer() {
+        setInterval(() => {
+            seconds++;
+            let mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            let secs = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${mins}:${secs}`;
+        }, 1000);
+    }
+</script>
 </body>
 </html>
