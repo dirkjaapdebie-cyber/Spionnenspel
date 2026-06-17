@@ -9,36 +9,36 @@
         .active { display: block; }
         h1 { color: #8b0000; text-transform: uppercase; letter-spacing: 2px; }
         input { background: #111; border: 1px solid #444; color: #fff; padding: 10px; margin: 10px; text-align: center; }
-        button { background: #8b0000; color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
-        table { border-collapse: collapse; width: 100%; max-width: 800px; margin: 20px auto; border: 1px solid #333; }
-        th, td { border: 1px solid #333; padding: 10px; text-align: center; }
-        th { background: #1a1a1a; font-size: 0.8em; }
-        .clickable { cursor: pointer; height: 30px; font-weight: bold; }
+        button { background: #8b0000; color: #fff; border: none; padding: 15px 30px; cursor: pointer; font-weight: bold; font-size: 1.2em; }
+        table { border-collapse: collapse; width: 100%; max-width: 900px; margin: 20px auto; border: 1px solid #333; }
+        th, td { border: 1px solid #333; padding: 12px; text-align: center; }
+        th { background: #1a1a1a; color: #8b0000; }
+        .clickable { cursor: pointer; height: 40px; font-weight: bold; font-size: 1.5em; transition: 0.2s; }
+        .clickable:hover { background: #1a1a1a; }
         .check { color: #38a169; }
         .cross { color: #e53e3e; }
-        #timer { font-size: 2.5em; color: #8b0000; margin: 20px 0; font-weight: bold; }
+        #timer { font-size: 3em; color: #8b0000; margin: 20px 0; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="p1" class="page active">
     <h1>OPERATIE MEESTERSPION</h1>
-    <p>Identificatie vereist.</p>
     <input type="text" id="user" placeholder="Geef je codenaam...">
     <br>
     <button onclick="start()">START MISSIE</button>
-    <audio id="music" src="https://cdn2.suno.ai/mf6NVMMhVW5F8XTL.mp3" loop></audio>
+    <audio id="music" src="https://cdn2.suno.ai/qeyh1FzYIdYQJI7D.mp3" loop></audio>
 </div>
 
 <div id="p2" class="page">
-    <h1>LOGIKWIS MATRIX: MEESTERSPION</h1>
+    <h1>LOGIKWIS MATRIX</h1>
     <div id="timer">00:00</div>
     <table>
         <thead>
             <tr>
-                <th>Echte Naam</th>
+                <th>Naam</th>
                 <th>Codenaam</th>
-                <th>Geheime Code</th>
+                <th>Code</th>
                 <th>Voorwerp</th>
                 <th>Locatie</th>
             </tr>
@@ -49,7 +49,8 @@
 
 <script>
     function start() {
-        document.getElementById('music').play();
+        const audio = document.getElementById('music');
+        audio.play().catch(e => console.log("Audio interactie vereist"));
         document.getElementById('p1').classList.remove('active');
         document.getElementById('p2').classList.add('active');
         runTimer();
@@ -58,9 +59,8 @@
     const namen = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
     const tbody = document.getElementById('matrix');
     
-    // Matrix opbouwen met de clickable Logikwis-logica
     namen.forEach(n => {
-        let row = `<tr><td>${n}</td>`;
+        let row = `<tr><td style="text-align:left; font-weight:bold;">${n}</td>`;
         for(let i=0; i<4; i++) {
             row += `<td class="clickable" onclick="toggle(this)"></td>`;
         }
