@@ -463,8 +463,54 @@ Je kunt dit bestand simpelweg op een USB-stick zetten, via WhatsApp/Mail naar de
 
 Het heeft geen internetverbinding nodig en draait volledig lokaal in elke browser (Chrome, Safari, Edge, Firefox). Je raakt je voortgang niet kwijt zolang het tabblad open blijft staan. Veel puzzelplezier met de voorbereidingen de komende dagen!
 
+Top, wellicht een resetknop om sneller alles teverwijderen toevoegren?
+
+Dat is een heel goed idee. Vooral bij een grote matrix kan het frustrerend zijn als je halverwege een foute beredenering hebt gemaakt en alles één voor één moet terugdraaien.
+HTML-icoon
+spionnen_logikwis_matrix_v2
+ HTML 
+Openen
+HTML-icoon
+spionnen_logikwis_matrix_v2
+ HTML 
+Openen
+
+Ik heb de code direct aangepast en een "Matrix Wissen 🗑" knop toegevoegd. Het nieuwe bestand is hier te downloaden:
+
+Wat is er veranderd?
+Nieuwe Resetknop: Er staat nu een duidelijke, rood omwande knop naast de controleknop onderaan het scherm.
+
+Beveiliging tegen per ongeluk klikken: Als een deelnemer per ongeluk op de knop klikt, wordt het raster niet direct geleegd. Er verschijnt eerst een nette pop-up in de browser met de vraag: "Weet je zeker dat je het hele puzzelraster wilt leegmaken?". Pas na bevestiging wordt alles gewist.
+
+Volledige schoonmaak: De knop wist in één milliseconde alle vinkjes én kruisjes, en zet de analysetekst onderaan weer terug naar de beginstand.
+
+Je kunt de nieuwe versie hierboven downloaden. Succes met de laatste loodjes voor het spel! Mocht je nog een handige tweak willen, laat het gerust weten.
+
+o ja en laat een klok, style 'atoomklok' meelopen. Degene die de puzzel het snels oplost is natuurlijk de meester spion
+
+Geweldige toevoeging! Een tikkende klok brengt direct de nodige gezonde wedstrijdspanning met zich mee.
+
+Ik heb de applicatie uitgebreid met een Atoomklok / Mission Timer widget. De vernieuwde interactieve matrix is hier te downloaden:
+HTML-icoon
+spionnen_logikwis_matrix_v3
+ HTML 
+Openen
+
+Wat is er toegevoegd in deze 'Atoomklok' editie?
+De Atoomklok Look & Feel: Bovenaan de matrix staat nu een strak, futuristisch donker display (MISSION ELAPSED TIME) met fel cyaan/neonblauwe oplichtende cijfers in een monospace lettertype.
+
+Extreme Precisie: De klok tikt live en razendsnel door in uren, minuten, seconden én honderdsten van seconden (centiseconden). Dit geeft het visuele effect van een uiterst nauwkeurige militaire timer.
+
+Automatische Stop bij Succes: Zodra een spion op de controleknop klikt en de matrix 100% correct heeft opgelost, bevriest de atoomklok direct.
+
+Tijdregistratie in het Overwinningsscherm: De exacte eindtijd (tot op de honderdste seconde nauwkeurig) wordt direct dikgedrukt in het groene succesbericht getoond (bijv. 00:14:23.45). Zo kan niemand sjoemelen met de eindtijd en is de échte Meesterspion direct bekend!
+
+Reset synchronisatie: Als spelers via de rode knop besluiten de matrix volledig te wissen om opnieuw te beginnen, wordt ook de atoomklok gereset naar nul en start deze direct opnieuw.
+
+Open het HTML-bestand simpelweg in een browser op een laptop of tablet en de missie kan beginnen. Heel veel succes én plezier met de spionnenstrijd!
 
 
+of kan de spelleider de klok laten 
 
 Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in een nieuw venster
 
@@ -473,7 +519,7 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️‍♂️ Geheim Agent Matrix - Logikwis Meesterspion</title>
+    <title>🕵️‍♂️ Geheim Agent Matrix - Meesterspion Chronometer</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -485,6 +531,7 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             --accent-green: #10b981;
             --accent-red: #ef4444;
             --accent-blue: #38bdf8;
+            --atomic-cyan: #22d3ee;
         }
 
         * {
@@ -506,7 +553,7 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             max-width: 900px;
         }
 
@@ -527,6 +574,42 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid var(--accent-blue);
+        }
+
+        /* --- ATOOMKLOK / STOPWATCH WIDGET --- */
+        .atomic-clock-container {
+            background: #020617;
+            border: 2px solid var(--atomic-cyan);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .clock-label {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 8pt;
+            color: var(--border-thick);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .clock-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 26pt;
+            font-weight: bold;
+            color: var(--atomic-cyan);
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+        }
+
+        .clock-display span.ms {
+            font-size: 18pt;
+            color: #0891b2;
         }
 
         /* Matrix Container */
@@ -624,7 +707,6 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             background-color: #334155;
         }
 
-        /* Block separation borders */
         .thick-right {
             border-right: 2px solid var(--border-thick) !important;
         }
@@ -633,14 +715,10 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             border-bottom: 2px solid var(--border-thick) !important;
         }
 
-        /* Blackout cells (dead zones in triangular grid) */
         .blackout {
             background-color: #090d16;
             cursor: not-allowed;
             border: 1px solid #1e293b;
-        }
-        .blackout:hover {
-            background-color: #090d16;
         }
 
         /* Icons inside cells */
@@ -699,9 +777,16 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             padding: 20px;
             border-radius: 10px;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .btn-validate {
@@ -723,6 +808,25 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
         }
 
+        .btn-reset {
+            background-color: transparent;
+            color: var(--accent-red);
+            border: 2px solid var(--accent-red);
+            padding: 10px 25px;
+            font-size: 11pt;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
         #validation-msg {
             margin-top: 15px;
             font-size: 11pt;
@@ -739,15 +843,20 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
 <header>
     <h1>🕵️‍♂️ LOGIKWIS MATRIX: MEESTERSPION</h1>
     <p class="instructions">
-        <strong>Hoe werkt het?</strong> Klik op een leeg vakje om te wisselen tussen een <strong>Vinkje (✓)</strong> als de combinatie klopt, of een <strong>Kruisje (✗)</strong> als het onmogelijk is. <br>
-        Placing a checkmark (✓) automatically crosses out all other options in that sub-grid row and column. Use the small trash can <strong>(🗑)</strong> in the top-right corner of a cell to reset it directly.
+        De klok loopt! Los de matrix zo snel mogelijk op om te bewijzen dat jij de ultieme Meesterspion bent. <br>
+        Klik op een leeg vakje voor een <strong>Vinkje (✓)</strong> of een <strong>Kruisje (✗)</strong>. Gebruik het vuilnisbakje <strong>(🗑)</strong> om een vakje te resetten.
     </p>
 </header>
+
+<!-- ATOOMKLOK COMPONENT -->
+<div class="atomic-clock-container">
+    <div class="clock-label">MISSION ELAPSED TIME (ATOMIC ACCURACY)</div>
+    <div class="clock-display" id="atomic-chronometer">00:00:00<span class="ms">.00</span></div>
+</div>
 
 <div class="matrix-container">
     <table id="logic-matrix">
         <thead>
-            <!-- Category Top Titles -->
             <tr>
                 <th colspan="2" rowspan="2" style="background: transparent; border: none;"></th>
                 <th colspan="8" class="cat-header thick-right">Codenaam</th>
@@ -795,13 +904,16 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             </tr>
         </thead>
         <tbody>
-            <!-- DATA GENERATED DYNAMICALLY VIA JAVASCRIPT / RENDERED PRE-BUILT FOR SAFETY -->
+            <!-- Generated via JS -->
         </tbody>
     </table>
 </div>
 
 <div class="validation-panel">
-    <button class="btn-validate" onclick="verifyMatrix()">Oplossing Controleren</button>
+    <div class="button-group">
+        <button class="btn-validate" onclick="verifyMatrix()">Oplossing Controleren</button>
+        <button class="btn-reset" onclick="resetMatrix()">Matrix Wissen 🗑</button>
+    </div>
     <div id="validation-msg">Plaats vinkjes in het raster en test je voortgang.</div>
 </div>
 
@@ -817,14 +929,53 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
         loc: ["Kelder", "Zolder", "Schuur", "Keuken", "Badkamer", "Tuinhuisje", "De Hal", "De Garage"]
     };
 
-    const tbody = document.querySelector('#logic-matrix tbody');
+    // --- CHRONOMETER ENGINE ---
+    let startTime = null;
+    let timerInterval = null;
+    let timerRunning = false;
+    let finalFormattedTime = "";
 
-    // Generate the complex Logic Grid HTML layout dynamically
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 30); // update every ~30ms for rapid precision look
+        timerRunning = true;
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timerRunning = false;
+    }
+
+    function updateTimer() {
+        if (!startTime) return;
+        let delta = Date.now() - startTime;
+        
+        let hrs = Math.floor(delta / 3600000);
+        let mins = Math.floor((delta % 3600000) / 60000);
+        let secs = Math.floor((delta % 60000) / 1000);
+        let ms = Math.floor((delta % 1000) / 10); // Centiseconds
+
+        let hrsStr = hrs.toString().padStart(2, '0');
+        let minsStr = mins.toString().padStart(2, '0');
+        let secsStr = secs.toString().padStart(2, '0');
+        let msStr = ms.toString().padStart(2, '0');
+
+        finalFormattedTime = `${hrsStr}:${minsStr}:${secsStr}.${msStr}`;
+        document.getElementById('atomic-chronometer').innerHTML = `${hrsStr}:${minsStr}:${secsStr}<span class="ms">.${msStr}</span>`;
+    }
+
+    // Start timer upon page fully loading
+    window.addEventListener('DOMContentLoaded', (event) => {
+        startTimer();
+    });
+
+
+    // Build Matrix DOM Layout
+    const tbody = document.querySelector('#logic-matrix tbody');
     rowCategories.forEach((rCat, rCatIdx) => {
         labels[rCat].forEach((rLabel, rIdx) => {
             const tr = document.createElement('tr');
             
-            // Add vertical side-header on the very first row item of the block
             if (rIdx === 0) {
                 const catTd = document.createElement('td');
                 catTd.rowSpan = 8;
@@ -834,17 +985,13 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
                 tr.appendChild(catTd);
             }
 
-            // Row name label
             const labelTd = document.createElement('td');
             labelTd.className = 'row-label';
             if (rIdx === 7) labelTd.classList.add('thick-bottom');
             labelTd.innerText = rLabel;
             tr.appendChild(labelTd);
 
-            // Generate interactive or blackout cells across all top columns
             subCategories.forEach((cCat, cCatIdx) => {
-                // Determine if this block is a dead zone in the triangular grid logic
-                // E.g., row 'spy' vs column 'spy' is redundant, row 'spy' vs column 'real' doesn't exist, etc.
                 let isBlackout = false;
                 if (rCat === 'spy' && cCat === 'spy') isBlackout = true;
                 if (rCat === 'code' && (cCat === 'spy' || cCat === 'code')) isBlackout = true;
@@ -863,12 +1010,10 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
                         cell.setAttribute('data-col-cat', cCat);
                         cell.setAttribute('data-col-idx', cIdx);
                         
-                        // Icon element inside
                         const iconSpan = document.createElement('span');
                         iconSpan.className = 'cell-icon';
                         cell.appendChild(iconSpan);
 
-                        // Trashcan button overlay
                         const trash = document.createElement('button');
                         trash.className = 'trash-btn';
                         trash.innerText = '🗑';
@@ -878,7 +1023,6 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
                         });
                         cell.appendChild(trash);
 
-                        // Click behavior - Cycle states
                         cell.addEventListener('click', function() {
                             let curr = this.getAttribute('data-state');
                             let next = 'empty';
@@ -893,7 +1037,6 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
                         });
                     }
 
-                    // Apply visual separators
                     if (cIdx === 7) cell.classList.add('thick-right');
                     if (rIdx === 7) cell.classList.add('thick-bottom');
 
@@ -905,21 +1048,18 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
         });
     });
 
-    // Smart logic-puzzle utility: Autofill row/column blocks with crosses
     function autoCrossOut(checkedCell) {
         let rCat = checkedCell.getAttribute('data-row-cat');
         let rIdx = checkedCell.getAttribute('data-row-idx');
         let cCat = checkedCell.getAttribute('data-col-cat');
         let cIdx = checkedCell.getAttribute('data-col-idx');
 
-        // Cross out in same horizontal row block
         document.querySelectorAll(`.grid-cell[data-row-cat="${rCat}"][data-row-idx="${rIdx}"][data-col-cat="${cCat}"]`).forEach(cell => {
             if (cell !== checkedCell && cell.getAttribute('data-state') === 'empty') {
                 cell.setAttribute('data-state', 'cross');
             }
         });
 
-        // Cross out in same vertical column block
         document.querySelectorAll(`.grid-cell[data-row-cat="${rCat}"][data-col-cat="${cCat}"][data-col-idx="${cIdx}"]`).forEach(cell => {
             if (cell !== checkedCell && cell.getAttribute('data-state') === 'empty') {
                 cell.setAttribute('data-state', 'cross');
@@ -927,7 +1067,19 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
         });
     }
 
-    // Encrypted verification using safe mathematical hashing to conceal answers from DOM inspectors
+    function resetMatrix() {
+        if (confirm("Weet je zeker dat je de matrix wilt wissen? De klok wordt ook herstart!")) {
+            document.querySelectorAll('.grid-cell').forEach(cell => {
+                cell.setAttribute('data-state', 'empty');
+            });
+            const msgEl = document.getElementById('validation-msg');
+            msgEl.className = "";
+            msgEl.innerHTML = "Plaats vinkjes in het raster en test je voortgang.";
+            stopTimer();
+            startTimer();
+        }
+    }
+
     function verifyMatrix() {
         let checks = document.querySelectorAll('.grid-cell[data-state="check"]');
         let correctCount = 0;
@@ -937,7 +1089,6 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
             let r = parseInt(cell.getAttribute('data-row-idx'));
             let c = parseInt(cell.getAttribute('data-col-idx'));
             
-            // Obfuscated algebraic check logic: checks alignment across parallel dimensions
             if (((r * 11 + 17) % 89) === ((c * 11 + 17) % 89)) {
                 correctCount++;
             } else {
@@ -947,13 +1098,13 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
 
         let msgEl = document.getElementById('validation-msg');
         
-        // Fully completed validation check (6 relational matrix blocks * 8 items = 48 absolute unique vinkjes required)
         if (correctCount === 48 && wrongCount === 0) {
+            stopTimer(); // STOP THE ATOOMKLOK ON TRIUMPH
             msgEl.className = "success";
-            msgEl.innerHTML = "🕵️‍♂️ <strong>GEFELICITEERD MEESTERSPION!</strong> Je hebt de volledige logikwis matrix gekraakt! Alle spionnen, codes, voorwerpen en locaties zijn correct met elkaar verbonden.";
+            msgEl.innerHTML = `🕵️‍♂️ <strong>GEFELICITEERD MEESTERSPION!</strong> Je hebt de volledige logikwis matrix gekraakt!<br>⏱ <strong>Eindtijd:</strong> <span style="color: var(--atomic-cyan); font-family: monospace; font-size:13pt;">${finalFormattedTime}</span>. Noteer je tijd in het missielogboek!`;
         } else if (correctCount > 0 || wrongCount > 0) {
             msgEl.className = "warning";
-            msgEl.innerHTML = `🔍 <strong>Matrix-analyse:</strong> Je hebt momenteel <strong>${correctCount}</strong> correcte connecties gelegd en <strong>${wrongCount}</strong> foutieve vermoedens (foutieve vinkjes). Blijf logisch nadenken spion!`;
+            msgEl.innerHTML = `🔍 <strong>Matrix-analyse:</strong> Je hebt momenteel <strong>${correctCount}</strong> correcte connecties gelegd en <strong>${wrongCount}</strong> foute vinkjes. De tijd tikt door...`;
         } else {
             msgEl.className = "";
             msgEl.innerHTML = "Plaats eerst een aantal groene vinkjes (✓) in het raster om je voortgang te kunnen toetsen.";
@@ -963,5 +1114,5 @@ Gemini is AI en kan fouten maken, ook over mensen. Je privacy en GeminiOpent in 
 
 </body>
 </html>
-spionnen_logikwis_matrix.html
-spionnen_logikwis_matrix.html weergeven.
+spionnen_logikwis_matrix_v3.html
+spionnen_logikwis_matrix_v3.html weergeven.
