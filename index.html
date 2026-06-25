@@ -12,8 +12,10 @@
         table { border-collapse: collapse; width: 90%; margin: 20px auto; border: 1px solid #333; }
         th, td { border: 1px solid #333; padding: 8px; text-align: center; }
         .header-input { width: 100px; background: #0f172a; color: #3b82f6; border: 1px solid #333; text-align: center; font-size: 10pt; font-weight: bold; }
-        .clickable { cursor: pointer; width: 40px; height: 40px; font-weight: bold; font-size: 1.2em; }
-        .check { color: #38a169; } .cross { color: #e53e3e; }
+        .clickable { cursor: pointer; width: 60px; height: 50px; position: relative; }
+        .check { color: #38a169; font-weight: bold; font-size: 1.2em; } 
+        .cross { color: #e53e3e; font-weight: bold; font-size: 1.2em; }
+        .trash { position: absolute; top: 2px; right: 2px; font-size: 8px; }
         #chat-container { border: 1px solid #444; height: 200px; overflow-y: scroll; margin: 20px auto; width: 90%; background: #0a0a0a; text-align: left; padding: 10px; }
     </style>
 </head>
@@ -32,10 +34,10 @@
         <thead>
             <tr>
                 <th>Spion</th>
-                <th><input type="text" class="header-input" placeholder="Categorie?"></th>
-                <th><input type="text" class="header-input" placeholder="Categorie?"></th>
-                <th><input type="text" class="header-input" placeholder="Categorie?"></th>
-                <th><input type="text" class="header-input" placeholder="Categorie?"></th>
+                <th><input type="text" class="header-input" value="Codenaam"></th>
+                <th><input type="text" class="header-input" value="Code"></th>
+                <th><input type="text" class="header-input" value="Voorwerp"></th>
+                <th><input type="text" class="header-input" value="Locatie"></th>
             </tr>
         </thead>
         <tbody id="matrix"></tbody>
@@ -92,15 +94,43 @@
 <script>
     const namen = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
     const tbody = document.getElementById('matrix');
+    
     namen.forEach(n => {
         let row = `<tr><td style="font-weight:bold">${n}</td>`;
-        for(let i=0; i<4; i++) row += `<td class="clickable" onclick="toggle(this)"></td>`;
+        for(let i=0; i<4; i++) {
+            row += `<td class="clickable" onclick="toggle(this)">
+                        <span class="symbol"></span>
+                        <span class="trash" onclick="clearCell(event, this)" style="display:none;">🗑️</span>
+                    </td>`;
+        }
         tbody.innerHTML += row + `</tr>`;
     });
 
     function toggle(c) {
-        c.innerHTML = (c.innerHTML === "") ? "✓" : (c.innerHTML === "✓" ? "✗" : "");
-        c.className = "clickable " + (c.innerHTML === "✓" ? "check" : (c.innerHTML === "✗" ? "cross" : ""));
+        const symbol = c.querySelector('.symbol');
+        const trash = c.querySelector('.trash');
+        
+        if (symbol.innerHTML === "") {
+            symbol.innerHTML = "✓";
+            c.className = "clickable check";
+            trash.style.display = "block";
+        } else if (symbol.innerHTML === "✓") {
+            symbol.innerHTML = "✗";
+            c.className = "clickable cross";
+            trash.style.display = "block";
+        } else {
+            symbol.innerHTML = "";
+            c.className = "clickable";
+            trash.style.display = "none";
+        }
+    }
+
+    function clearCell(event, el) {
+        event.stopPropagation();
+        const parent = el.parentElement;
+        parent.querySelector('.symbol').innerHTML = "";
+        parent.className = "clickable";
+        el.style.display = "none";
     }
 
     function start() {
