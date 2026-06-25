@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>🕵️‍♂️ Matrix & Heimelijk 1-op-1 Overleg</title>
+    <title>🕵️‍♂️ Volledige Logigram Matrix & DM Chat</title>
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -16,24 +16,26 @@
         }
         h1 { color: #38bdf8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
         
-        /* GRID LOGIKWIS MATRIX (cf. image_752a19.png) */
+        /* ECHTE LOGIGRAM MATRIX STYLING */
         .matrix-container { overflow-x: auto; margin-bottom: 40px; background: #1e1e1e; padding: 20px; border-radius: 8px; border: 1px solid #333; }
         table { border-collapse: collapse; margin: 0 auto; }
-        td, th { border: 1px solid #444; width: 40px; height: 40px; text-align: center; vertical-align: middle; padding: 0; position: relative; }
+        td, th { border: 1px solid #444; width: 35px; height: 35px; text-align: center; vertical-align: middle; padding: 0; }
         
-        th.row-header { text-align: right; width: 120px; padding-right: 10px; background: #252525; color: #fff; }
-        th.col-header { height: 120px; background: #252525; }
-        .vertical-text { transform: rotate(-90deg); white-space: nowrap; display: inline-block; width: 40px; color: #38bdf8; font-size: 0.9em; font-weight: bold; }
+        th.row-header { text-align: right; width: 140px; padding-right: 10px; background: #252525; color: #fff; font-size: 0.85em; }
+        th.col-header { height: 140px; background: #252525; vertical-align: bottom; padding-bottom: 10px; }
+        .vertical-text { transform: rotate(-90deg); white-space: nowrap; display: inline-block; width: 35px; color: #38bdf8; font-size: 0.85em; font-weight: bold; text-align: left; }
         
+        /* Dikke randen voor de sub-blokken (zoals in het screenshot) */
         .thick-right { border-right: 3px solid #38bdf8; }
         .thick-bottom { border-bottom: 3px solid #38bdf8; }
+        .blackout { background: #121212; border: none; }
         
-        .cell { cursor: pointer; font-weight: bold; font-size: 1.3em; user-select: none; }
+        .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
         .cell:hover { background: #2a2a2a; }
-        .check { color: #10b981; background: rgba(16, 185, 129, 0.1); }
-        .cross { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+        .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
 
-        /* 1-OP-1 CHAT INTERFACE */
+        /* DM INTERFACE */
         .chat-container { 
             width: 100%; 
             max-width: 600px; 
@@ -49,7 +51,7 @@
         .selector-row select { background: #2a3942; color: #fff; border: none; padding: 6px; border-radius: 4px; cursor: pointer; flex: 1; }
         
         .chat-messages { 
-            height: 250px; 
+            height: 220px; 
             padding: 15px; 
             overflow-y: auto; 
             background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); 
@@ -71,41 +73,46 @@
 </head>
 <body>
 
-    <h1>🕵️‍♂️ OPERATIE MEESTERSPION</h1>
+    <h1>🕵️‍♂️ LOGIGRAM MATRIX & SECURE CHAT</h1>
 
-    <!-- LOGIKWIS MATRIX GRID -->
     <div class="matrix-container">
         <table>
             <thead>
                 <tr>
-                    <th style="background:transparent; border:none;"></th>
-                    <!-- Codenamen -->
+                    <th class="blackout"></th>
                     <th class="col-header"><span class="vertical-text">Vodka</span></th>
                     <th class="col-header"><span class="vertical-text">Sakura</span></th>
                     <th class="col-header"><span class="vertical-text">Dragon</span></th>
                     <th class="col-header thick-right"><span class="vertical-text">Sphinx</span></th>
-                    <!-- Codes -->
                     <th class="col-header"><span class="vertical-text">3820</span></th>
                     <th class="col-header"><span class="vertical-text">7731</span></th>
                     <th class="col-header"><span class="vertical-text">9413</span></th>
-                    <th class="col-header"><span class="vertical-text">5082</span></th>
+                    <th class="col-header thick-right"><span class="vertical-text">5082</span></th>
+                    <th class="col-header"><span class="vertical-text">Kelder</span></th>
+                    <th class="col-header"><span class="vertical-text">Zolder</span></th>
+                    <th class="col-header"><span class="vertical-text">Schuur</span></th>
+                    <th class="col-header"><span class="vertical-text">Keuken</span></th>
                 </tr>
             </thead>
             <tbody>
-                <tr><th class="row-header">Miriam</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr><th class="row-header">DirkJaap</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr><th class="row-header">Hannah</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr class="thick-bottom"><th class="row-header">Tommie</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                <tr><th class="row-header">Miriam</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                <tr><th class="row-header">DirkJaap</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                <tr><th class="row-header">Hannah</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell_thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                <tr class="thick-bottom"><th class="row-header">Tommie</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
                 
-                <tr><th class="row-header">3820</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td style="background:#121212; border:none;" colspan="4"></td></tr>
-                <tr><th class="row-header">7731</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td style="background:#121212; border:none;" colspan="4"></td></tr>
-                <tr><th class="row-header">9413</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td style="background:#121212; border:none;" colspan="4"></td></tr>
-                <tr><th class="row-header">5082</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td style="background:#121212; border:none;" colspan="4"></td></tr>
+                <tr><th class="row-header">Kelder</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
+                <tr><th class="row-header">Zolder</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
+                <tr><th class="row-header">Schuur</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
+                <tr class="thick-bottom"><th class="row-header">Keuken</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
+
+                <tr><th class="row-header">3820</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
+                <tr><th class="row-header">7731</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
+                <tr><th class="row-header">9413</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
+                <tr><th class="row-header">5082</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
             </tbody>
         </table>
     </div>
 
-    <!-- HEIMELIJK 1-OP-1 NETWERK -->
     <div class="chat-container">
         <div class="chat-header">
             <div class="selector-row">
@@ -115,6 +122,10 @@
                     <option value="DirkJaap">DirkJaap</option>
                     <option value="Hannah">Hannah</option>
                     <option value="Tommie">Tommie</option>
+                    <option value="Joshua">Joshua</option>
+                    <option value="Judith">Judith</option>
+                    <option value="Micha">Micha</option>
+                    <option value="Annewil">Annewil</option>
                 </select>
             </div>
             <div class="selector-row">
@@ -124,24 +135,26 @@
                     <option value="Miriam">Miriam</option>
                     <option value="Hannah">Hannah</option>
                     <option value="Tommie">Tommie</option>
+                    <option value="Joshua">Joshua</option>
+                    <option value="Judith">Judith</option>
+                    <option value="Micha">Micha</option>
+                    <option value="Annewil">Annewil</option>
                 </select>
             </div>
         </div>
         
-        <div class="chat-messages" id="chatGrid">
-            <!-- Berichten verschijnen hier dynamisch -->
-        </div>
+        <div class="chat-messages" id="chatGrid"></div>
 
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Typ een beveiligd 1-on-1 bericht..." onkeypress="checkEnter(event)">
+            <input type="text" id="chatInput" placeholder="Typ een beveiligd 1-op-1 bericht..." onkeypress="checkEnter(event)">
             <button onclick="sendMessage()">Verzend</button>
         </div>
     </div>
 
     <script>
-        // Database in de browser om de geheime berichten gescheiden op te slaan
         let messageDatabase = [];
 
+        // Schakelen tussen + en - (conform de afbeelding)
         function toggle(cell) {
             if (cell.innerHTML === "") {
                 cell.innerHTML = "–";
@@ -168,14 +181,8 @@
                 return;
             }
 
-            // Sla bericht op in de geheime lokale database
             const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            messageDatabase.push({
-                from: me,
-                to: target,
-                text: messageText,
-                time: time
-            });
+            messageDatabase.push({ from: me, to: target, text: messageText, time: time });
 
             input.value = "";
             updateChatView();
@@ -186,9 +193,8 @@
             const target = document.getElementById('chatTarget').value;
             const chatGrid = document.getElementById('chatGrid');
             
-            chatGrid.innerHTML = ""; // Scherm leegmaken om lekken te voorkomen
+            chatGrid.innerHTML = ""; 
 
-            // Filter alleen de specifieke berichten tussen 'Mij' en 'Doelwit'
             const conversation = messageDatabase.filter(msg => 
                 (msg.from === me && msg.to === target) || (msg.from === target && msg.to === me)
             );
@@ -200,24 +206,15 @@
 
             conversation.forEach(msg => {
                 const msgDiv = document.createElement('div');
-                if (msg.from === me) {
-                    msgDiv.className = "message sent";
-                    msgDiv.innerHTML = `${msg.text}<span class="timestamp">${msg.time}</span>`;
-                } else {
-                    msgDiv.className = "message received";
-                    msgDiv.innerHTML = `${msg.text}<span class="timestamp">${msg.time}</span>`;
-                }
+                msgDiv.className = (msg.from === me) ? "message sent" : "message received";
+                msgDiv.innerHTML = `${msg.text}<span class="timestamp">${msg.time}</span>`;
                 chatGrid.appendChild(msgDiv);
             });
 
             chatGrid.scrollTop = chatGrid.scrollHeight;
         }
 
-        function checkEnter(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
-
-        // Eerste weergave laden
+        function checkEnter(e) { if (e.key === 'Enter') sendMessage(); }
         updateChatView();
     </script>
 </body>
