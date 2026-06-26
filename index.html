@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️‍♂️ AIVD - Geheime Dossier Toegang</title>
+    <title>🕵️‍♂️ AIVD - Geheime Dossier Toegang & Logigram</title>
     <style>
         /* Algemene opmaak */
         body {
-            background: #121212; /* Donkere achtergrond passend bij de eerdere logigram code */
+            background: #121212; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -15,14 +15,9 @@
             padding: 20px;
             margin: 0;
             color: #e0e0e0;
-            min-height: 100vh;
         }
 
-        /* Container voor de hoofdpagina */
-        .main-container {
-            max-width: 1000px;
-            width: 100%;
-        }
+        .main-container { max-width: 1200px; width: 100%; }
 
         /* AIVD Header */
         .aivd-header {
@@ -37,38 +32,27 @@
             align-items: center;
             gap: 20px;
         }
-        .aivd-header svg { height: 70px; width: auto; fill: #003d73; }
-        .aivd-header-text h2 { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
-        .aivd-header-text p { margin: 4px 0 0 0; font-size: 1em; color: #b0b0b0; }
+        .aivd-header svg { height: 60px; width: auto; fill: #003d73; }
+        .aivd-header-text h2 { margin: 0; font-size: 1.2em; font-weight: bold; color: #fff; }
+        .aivd-header-text p { margin: 4px 0 0 0; font-size: 0.9em; color: #b0b0b0; }
 
-        /* Instructieblok voor Code */
+        /* Code-instructie & Invoer */
         .code-instructie {
             background: #1a1a2e;
-            border-left: 8px solid #d32f2f; /* Rood voor dreiging */
+            border-left: 8px solid #d32f2f;
             padding: 15px 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border-radius: 6px;
         }
-        .code-instructie h3 {
-            color: #ef4444; 
-            margin: 0 0 8px 0; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-        }
-        .code-instructie p {
-            margin: 5px 0;
-            line-height: 1.6;
-            color: #d1d5db;
-        }
-        .code-instructie strong { color: #fbbf24; } /* Geel voor nadruk */
+        .code-instructie h3 { color: #ef4444; margin: 0 0 8px 0; letter-spacing: 1px; }
+        .code-instructie p { margin: 5px 0; line-height: 1.6; color: #d1d5db; }
+        .code-instructie strong { color: #fbbf24; }
 
-        /* Invoerveld */
         .code-entry-area {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         .code-entry-area input {
             padding: 12px 20px;
@@ -92,83 +76,87 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .code-entry-area button:hover { background: #005a9e; }
+        #errorMsg { color: #ef4444; font-weight: bold; display: none; text-align: center; margin-bottom: 20px; }
 
-        /* Foutmelding */
-        #errorMsg {
-            color: #ef4444;
-            font-weight: bold;
-            margin-top: -20px;
+        /* Paspoort uitvoer (verborgen) */
+        #passportOutput { display: none; justify-content: center; margin-bottom: 30px; }
+
+        /* --- TRAPSGEWIJZE LOGIGRAM MATRIX --- */
+        .matrix-container {
+            background: #1e1e1e;
+            padding: 30px 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            display: none; /* Wordt zichtbaar na code-invoer */
+            overflow-x: auto;
             margin-bottom: 20px;
-            display: none;
+        }
+
+        .logigram-table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            border: 2px solid #38bdf8; /* Dikke buitenrand */
+        }
+        
+        /* Basis cel styling */
+        .logigram-table td, .logigram-table th {
+            border: 1px solid #5a5a5a;
+            width: 40px; height: 40px;
             text-align: center;
+            vertical-align: middle;
+            padding: 0;
+        }
+        
+        /* Koppen */
+        .logigram-table th.row-header {
+            text-align: right; padding: 0 15px 0 5px; 
+            background: #252525; color: #fff; font-size: 0.8em; font-weight: normal;
+        }
+        .logigram-table th.col-header {
+            height: 120px; background: #252525; vertical-align: bottom; padding-bottom: 10px;
+        }
+        .logigram-table .vertical-text {
+            transform: rotate(-90deg); white-space: nowrap; display: inline-block; 
+            color: #38bdf8; font-size: 0.8em; font-weight: bold;
         }
 
-        /* Container voor Paspoorten en Logigram */
-        .content-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+        /* Dikke blauwe lijnen en lege zwarte vlakken */
+        .logigram-table .thick-right { border-right: 3px solid #38bdf8; }
+        .logigram-table .thick-bottom { border-bottom: 3px solid #38bdf8; }
+        .logigram-table .blackout {
+            background: #121212;
+            border-top: 1px solid #121212;
+            border-left: 1px solid #121212;
+            border-right: 1px solid #121212;
+        }
+        .logigram-table .blackout-thick {
+            background: #121212;
+            border-top: 3px solid #38bdf8;
+            border-left: 3px solid #38bdf8;
         }
 
-        /* Paspoort uitvoer (standaard verborgen) */
-        #passportOutput {
-            display: none;
-            justify-content: center;
-        }
+        /* Klikbare cellen */
+        .logigram-table .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
+        .logigram-table .cell:hover { background: #2a2a2a; }
+        .logigram-table .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+        .logigram-table .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
 
-        /* Logigram Container */
-        .matrix-container { 
-            background: #1e1e1e; 
-            padding: 20px; 
-            border-radius: 8px; 
-            border: 1px solid #333; 
-            display: none; /* Standaard verborgen, maar als de code klopt wordt het zichtbaar */
-            overflow-x: auto; 
-        }
-        .matrix-container table { 
-            border-collapse: collapse; 
-            margin: 0 auto; 
-            border: 2px solid #38bdf8; 
-        }
-        .matrix-container td, .matrix-container th { 
-            border: 1px solid #5a5a5a; 
-            width: 40px; height: 40px; 
-            text-align: center; 
-            vertical-align: middle; 
-            padding: 0; 
-        }
-        .matrix-container th.row-header { 
-            text-align: right; padding: 0 15px 0 5px; background: #252525; color: #fff; font-size: 0.85em; font-weight: normal; 
-        }
-        .matrix-container th.col-header { 
-            height: 120px; background: #252525; vertical-align: bottom; padding-bottom: 10px; 
-        }
-        .matrix-container .vertical-text { 
-            transform: rotate(-90deg); white-space: nowrap; display: inline-block; color: #38bdf8; font-size: 0.8em; font-weight: bold; 
-        }
-        .matrix-container .thick-right { border-right: 3px solid #38bdf8; }
-        .matrix-container .thick-bottom { border-bottom: 3px solid #38bdf8; }
-        .matrix-container .blackout { background: #121212; border: none; }
-        .matrix-container .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
-        .matrix-container .cell:hover { background: #2a2a2a; }
-        .matrix-container .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
-        .matrix-container .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
-
-        /* Print styling */
         @media print {
             body { background: white; color: black; padding: 0; }
-            .aivd-header { background: white; border-radius: 0; margin: 0; }
-            .aivd-header-text h2, .aivd-header-text p { color: black; }
-            .code-instructie, .code-entry-area, #errorMsg, .matrix-container, .print-btn { display: none !important; }
+            .aivd-header, .code-instructie, .code-entry-area, #errorMsg, .print-btn { display: none !important; }
             #passportOutput { display: flex !important; }
+            .matrix-container { display: block !important; border: none; padding: 0; background: white; }
+            .logigram-table { border: 2px solid #000; }
+            .logigram-table td, .logigram-table th { border: 1px solid #ccc; color: black; }
+            .logigram-table th.col-header, .logigram-table th.row-header { background: #f0f0f0; color: black; }
+            .logigram-table .vertical-text { color: black; }
+            .logigram-table .thick-right, .logigram-table .thick-bottom, .logigram-table .blackout-thick { border-color: #000; }
+            .logigram-table .blackout, .logigram-table .blackout-thick { background: white; }
         }
     </style>
 </head>
 <body>
-
     <div class="main-container">
         <!-- AIVD Header -->
         <div class="aivd-header">
@@ -186,51 +174,65 @@
             </div>
         </div>
 
-        <!-- INSTRUCTIEBLOK -->
         <div class="code-instructie">
             <h3>⚠️ GEHEIME TOEGANG</h3>
-            <p>Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht.</p>
-            <p>Voer hieronder jouw <strong>viercijferige dossiernummer</strong> in. Dit is de code waaronder jij bekend bent bij de AIVD.<br>
-            <em>Wees voorzichtig! Als iemand anders jouw code ziet, kunnen zij jouw geheime identiteit en opdracht stelen.</em></p>
+            <p>Voer hieronder jouw <strong>viercijferige dossiernummer</strong> in om je geheime paspoort te openen.<br>
+            <em>Let op! Dit is de code waaronder jij bekend bent bij de AIVD.</em></p>
         </div>
 
-        <!-- INVOER VELD -->
         <div class="code-entry-area">
             <input type="password" id="codeInput" maxlength="4" placeholder="____" inputmode="numeric" onkeypress="checkEnter(event)">
             <button onclick="verifyCode()">🔓 Open Dossier</button>
         </div>
-        <div id="errorMsg">❌ Foute code! De AIVD heeft je bijna te pakken. Probeer opnieuw.</div>
+        <div id="errorMsg">❌ Foute code! De AIVD heeft je bijna te pakken.</div>
 
-        <!-- PASPOORT UITVOER (Wordt ingevuld door JS) -->
-        <div id="passportOutput" class="content-grid"></div>
+        <div id="passportOutput"></div>
 
-        <!-- LOGIGRAM RASTER -->
+        <!-- TRAPSGEWIJZE LOGIGRAM MATRIX -->
         <div class="matrix-container" id="matrixContainer">
-            <table>
+            <table class="logigram-table">
                 <thead>
                     <tr>
-                        <th class="blackout"></th>
-                        <th class="col-header"><span class="vertical-text">Agent Vodka</span></th>
+                        <!-- Bovenste lege hoek -->
+                        <th class="blackout" rowspan="2" colspan="2"></th>
+                        <th class="blackout-thick" colspan="4"></th>
+                        <th class="blackout" colspan="8"></th>
+                        <th class="blackout" colspan="8"></th>
+                        <th class="blackout" colspan="8"></th>
+                    </tr>
+                    <tr>
+                        <!-- Categorie 1: Codenamen -->
+                        <th class="col-header thick-right"><span class="vertical-text">Agent Vodka</span></th>
                         <th class="col-header"><span class="vertical-text">Sakura</span></th>
                         <th class="col-header"><span class="vertical-text">Master Dragon</span></th>
                         <th class="col-header thick-right"><span class="vertical-text">Mossad Sphinx</span></th>
-                        <th class="col-header"><span class="vertical-text">4912</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Sir James</span></th>
+                        <th class="col-header"><span class="vertical-text">Madame Croissant</span></th>
+                        <th class="col-header"><span class="vertical-text">Uncle Sam</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Django</span></th>
+                        
+                        <!-- Categorie 2: Codes -->
+                        <th class="col-header thick-right"><span class="vertical-text">4912</span></th>
                         <th class="col-header"><span class="vertical-text">7731</span></th>
                         <th class="col-header"><span class="vertical-text">1594</span></th>
                         <th class="col-header thick-right"><span class="vertical-text">3820</span></th>
-                        <th class="col-header"><span class="vertical-text">6205</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">6205</span></th>
                         <th class="col-header"><span class="vertical-text">9413</span></th>
                         <th class="col-header"><span class="vertical-text">5082</span></th>
                         <th class="col-header thick-right"><span class="vertical-text">2367</span></th>
-                        <th class="col-header"><span class="vertical-text">Garde</span></th>
+
+                        <!-- Categorie 3: Voorwerpen -->
+                        <th class="col-header thick-right"><span class="vertical-text">Garde</span></th>
                         <th class="col-header"><span class="vertical-text">Oude krant</span></th>
                         <th class="col-header"><span class="vertical-text">Oude zaklamp</span></th>
                         <th class="col-header thick-right"><span class="vertical-text">Koffiemok</span></th>
-                        <th class="col-header"><span class="vertical-text">Strandhanddoek</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Strandhanddoek</span></th>
                         <th class="col-header"><span class="vertical-text">Omgekeerde Bloempot</span></th>
                         <th class="col-header"><span class="vertical-text">Opgerolde Paraplu</span></th>
                         <th class="col-header thick-right"><span class="vertical-text">Gereedschapskist</span></th>
-                        <th class="col-header"><span class="vertical-text">Kelder</span></th>
+
+                        <!-- Categorie 4: Locaties -->
+                        <th class="col-header thick-right"><span class="vertical-text">Kelder</span></th>
                         <th class="col-header"><span class="vertical-text">Zolder</span></th>
                         <th class="col-header"><span class="vertical-text">Schuur</span></th>
                         <th class="col-header"><span class="vertical-text">Keuken</span></th>
@@ -241,14 +243,309 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><th class="row-header">Miriam</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">DirkJaap</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Hannah</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Tommie</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Joshua</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Judith</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Micha</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                    <tr><th class="row-header">Annewil</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <!-- ECHTE NAMEN -->
+                    <tr>
+                        <th class="row-header" colspan="2">Miriam</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">DirkJaap</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">Hannah</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">Tommie</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">Joshua</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">Judith</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header" colspan="2">Micha</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr class="thick-bottom">
+                        <th class="row-header" colspan="2">Annewil</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+
+                    <!-- TRAP 2: CODENAMEN - CODE -->
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right thick-bottom" colspan="2" style="border-bottom: 1px solid #5a5a5a;">Agent Vodka</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Sakura</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Master Dragon</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Mossad Sphinx</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Sir James</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Madame Croissant</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Uncle Sam</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr class="thick-bottom">
+                        <th class="blackout-thick" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <th class="row-header thick-right" colspan="2">Django</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+
+                    <!-- TRAP 3: CODE - VOORWERP -->
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right thick-bottom" colspan="2" style="border-bottom: 1px solid #5a5a5a;">4912</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">7731</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">1594</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">3820</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">6205</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">9413</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">5082</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr class="thick-bottom">
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">2367</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+
+                    <!-- TRAP 4: VOORWERP - LOCATIE -->
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right thick-bottom" colspan="2" style="border-bottom: 1px solid #5a5a5a;">Garde</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Oude krant</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Oude zaklamp</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Koffiemok</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Strandhanddoek</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Omgekeerde Bloempot</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Opgerolde Paraplu</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
+                    <tr>
+                        <th class="blackout" colspan="2"></th>
+                        <td class="blackout" colspan="4"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <td class="blackout" colspan="8"></td>
+                        <th class="row-header thick-right" colspan="2">Gereedschapskist</th>
+                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -257,7 +554,7 @@
     <script>
         // Database met de codes en bijbehorende paspoort HTML (Tommie is Duits)
         const passportData = {
-            "4912": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "4912": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #01</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Agent Vodka</span>
@@ -278,7 +575,7 @@
                     <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de KEUKEN, drink drie slokken en zeg: <em>"De garde is vandaag erg bot."</em></p>
                 </div>
             </div>`,
-            "7731": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "7731": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #02</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Sakura</span>
@@ -299,7 +596,7 @@
                     <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de HAL. Leg een krant op de tafel en wacht op de zin: <em>"Ja, het is weer kommer en kwel."</em></p>
                 </div>
             </div>`,
-            "1594": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "1594": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #03</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Master Dragon</span>
@@ -320,7 +617,7 @@
                     <p style="margin:0; font-size:0.85em;">Luid de bel op een onbewaakt moment. Ga direct daarna naar de CENTRALE ONTMOETINGSPLEK, schijn driemaal met je zaklamp en drop een briefje met je codenaam in de box.</p>
                 </div>
             </div>`,
-            "3820": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "3820": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #04</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Mossad Sphinx</span>
@@ -341,7 +638,7 @@
                     <p style="margin:0; font-size:0.85em;">Wenn die Klingel ertönt, gehe mit deinem Becher zum GARTENHAUS. Prostiere dem ersten Spion. Wenn diese*r sagt: <em>"Sphinx, es ist kalt draußen"</em>, nenne deinen Decknamen.</p>
                 </div>
             </div>`,
-            "6205": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "6205": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #05</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Sir James</span>
@@ -362,7 +659,7 @@
                     <p style="margin:0; font-size:0.85em;">Als de bel luidt, sla je strandhanddoek om en loop naar de GARAGE. Vraag aan de eerste persoon: <em>"Heeft u het gereedschap voor de Sir?"</em></p>
                 </div>
             </div>`,
-            "9413": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "9413": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #06</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Madame Croissant</span>
@@ -383,7 +680,7 @@
                     <p style="margin:0; font-size:0.85em;">Als de bel luidt, neem je omgekeerde bloempot mee naar de HAL. Zet hem neer met een briefje eronder: <em>"Madame Croissant is hier geweest."</em></p>
                 </div>
             </div>`,
-            "5082": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "5082": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #07</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Uncle Sam</span>
@@ -404,7 +701,7 @@
                     <p style="margin:0; font-size:0.85em;">Als de bel luidt, loop met een opgestoken paraplu naar de SCHUUR. Klop in ritme en roep: <em>"Uncle Sam vraagt om onderdak!"</em></p>
                 </div>
             </div>`,
-            "2367": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+            "2367": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
                     <h2 style="margin:0;">DOSSIER #08</h2>
                     <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Django</span>
