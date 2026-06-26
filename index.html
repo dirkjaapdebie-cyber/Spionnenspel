@@ -2,159 +2,432 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>🕵️‍♂️ Volledige Logigram Matrix & DM Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️‍♂️ AIVD - Geheime Dossier Toegang</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #121212; 
-            color: #e0e0e0; 
-            margin: 0; 
-            padding: 20px;
+        /* Algemene opmaak */
+        body {
+            background: #121212; /* Donkere achtergrond passend bij de eerdere logigram code */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
+            margin: 0;
+            color: #e0e0e0;
+            min-height: 100vh;
         }
-        h1 { color: #38bdf8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        
-        /* ECHTE LOGIGRAM MATRIX STYLING */
-        .matrix-container { overflow-x: auto; margin-bottom: 40px; background: #1e1e1e; padding: 20px; border-radius: 8px; border: 1px solid #333; }
-        table { border-collapse: collapse; margin: 0 auto; }
-        td, th { border: 1px solid #444; width: 35px; height: 35px; text-align: center; vertical-align: middle; padding: 0; }
-        
-        th.row-header { text-align: right; width: 140px; padding-right: 10px; background: #252525; color: #fff; font-size: 0.85em; }
-        th.col-header { height: 140px; background: #252525; vertical-align: bottom; padding-bottom: 10px; }
-        .vertical-text { transform: rotate(-90deg); white-space: nowrap; display: inline-block; width: 35px; color: #38bdf8; font-size: 0.85em; font-weight: bold; text-align: left; }
-        
-        /* Dikke randen voor de sub-blokken (zoals in het screenshot) */
-        .thick-right { border-right: 3px solid #38bdf8; }
-        .thick-bottom { border-bottom: 3px solid #38bdf8; }
-        .blackout { background: #121212; border: none; }
-        
-        .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
-        .cell:hover { background: #2a2a2a; }
-        .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
-        .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
 
-        /* DM INTERFACE */
-        .chat-container { 
-            width: 100%; 
-            max-width: 600px; 
-            background: #0b141a; 
-            border: 1px solid #222; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            overflow: hidden;
+        /* Container voor de hoofdpagina */
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
         }
-        .chat-header { background: #202c33; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #2a3942; }
-        .selector-row { display: flex; gap: 10px; align-items: center; }
-        .selector-row label { font-size: 0.85em; color: #8696a0; min-width: 65px; }
-        .selector-row select { background: #2a3942; color: #fff; border: none; padding: 6px; border-radius: 4px; cursor: pointer; flex: 1; }
-        
-        .chat-messages { 
-            height: 220px; 
-            padding: 15px; 
-            overflow-y: auto; 
-            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); 
-            background-color: #0b141a;
+
+        /* AIVD Header */
+        .aivd-header {
+            width: 100%;
+            background: #1e1e1e;
+            border-bottom: 4px solid #003d73;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px 8px 0 0;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .aivd-header svg { height: 70px; width: auto; fill: #003d73; }
+        .aivd-header-text h2 { margin: 0; font-size: 1.4em; font-weight: bold; color: #fff; }
+        .aivd-header-text p { margin: 4px 0 0 0; font-size: 1em; color: #b0b0b0; }
+
+        /* Instructieblok voor Code */
+        .code-instructie {
+            background: #1a1a2e;
+            border-left: 8px solid #d32f2f; /* Rood voor dreiging */
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+        }
+        .code-instructie h3 {
+            color: #ef4444; 
+            margin: 0 0 8px 0; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+        .code-instructie p {
+            margin: 5px 0;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+        .code-instructie strong { color: #fbbf24; } /* Geel voor nadruk */
+
+        /* Invoerveld */
+        .code-entry-area {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .code-entry-area input {
+            padding: 12px 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 8px;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            width: 180px;
+            outline: none;
+        }
+        .code-entry-area input:focus { border-color: #38bdf8; }
+        .code-entry-area button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            background: #003d73;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .code-entry-area button:hover { background: #005a9e; }
+
+        /* Foutmelding */
+        #errorMsg {
+            color: #ef4444;
+            font-weight: bold;
+            margin-top: -20px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Container voor Paspoorten en Logigram */
+        .content-grid {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 30px;
         }
-        .message { max-width: 75%; padding: 8px 12px; border-radius: 8px; font-size: 0.95em; line-height: 1.4; }
-        .message .timestamp { font-size: 0.7em; color: #8696a0; display: block; text-align: right; margin-top: 4px; }
-        .message.received { background: #202c33; color: #e9edef; align-self: flex-start; border-top-left-radius: 0; }
-        .message.sent { background: #005c4b; color: #e9edef; align-self: flex-end; border-top-right-radius: 0; }
-        
-        .chat-input-area { background: #202c33; padding: 10px; display: flex; gap: 10px; align-items: center; }
-        .chat-input-area input { flex: 1; background: #2a3942; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; outline: none; }
-        .chat-input-area button { background: #00a884; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .chat-input-area button:hover { background: #008f72; }
+
+        /* Paspoort uitvoer (standaard verborgen) */
+        #passportOutput {
+            display: none;
+            justify-content: center;
+        }
+
+        /* Logigram Container */
+        .matrix-container { 
+            background: #1e1e1e; 
+            padding: 20px; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            display: none; /* Standaard verborgen, maar als de code klopt wordt het zichtbaar */
+            overflow-x: auto; 
+        }
+        .matrix-container table { 
+            border-collapse: collapse; 
+            margin: 0 auto; 
+            border: 2px solid #38bdf8; 
+        }
+        .matrix-container td, .matrix-container th { 
+            border: 1px solid #5a5a5a; 
+            width: 40px; height: 40px; 
+            text-align: center; 
+            vertical-align: middle; 
+            padding: 0; 
+        }
+        .matrix-container th.row-header { 
+            text-align: right; padding: 0 15px 0 5px; background: #252525; color: #fff; font-size: 0.85em; font-weight: normal; 
+        }
+        .matrix-container th.col-header { 
+            height: 120px; background: #252525; vertical-align: bottom; padding-bottom: 10px; 
+        }
+        .matrix-container .vertical-text { 
+            transform: rotate(-90deg); white-space: nowrap; display: inline-block; color: #38bdf8; font-size: 0.8em; font-weight: bold; 
+        }
+        .matrix-container .thick-right { border-right: 3px solid #38bdf8; }
+        .matrix-container .thick-bottom { border-bottom: 3px solid #38bdf8; }
+        .matrix-container .blackout { background: #121212; border: none; }
+        .matrix-container .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
+        .matrix-container .cell:hover { background: #2a2a2a; }
+        .matrix-container .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+        .matrix-container .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+
+        /* Print styling */
+        @media print {
+            body { background: white; color: black; padding: 0; }
+            .aivd-header { background: white; border-radius: 0; margin: 0; }
+            .aivd-header-text h2, .aivd-header-text p { color: black; }
+            .code-instructie, .code-entry-area, #errorMsg, .matrix-container, .print-btn { display: none !important; }
+            #passportOutput { display: flex !important; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>🕵️‍♂️ LOGIGRAM MATRIX & SECURE CHAT</h1>
-
-    <div class="matrix-container">
-        <table>
-            <thead>
-                <tr>
-                    <th class="blackout"></th>
-                    <th class="col-header"><span class="vertical-text">Vodka</span></th>
-                    <th class="col-header"><span class="vertical-text">Sakura</span></th>
-                    <th class="col-header"><span class="vertical-text">Dragon</span></th>
-                    <th class="col-header thick-right"><span class="vertical-text">Sphinx</span></th>
-                    <th class="col-header"><span class="vertical-text">3820</span></th>
-                    <th class="col-header"><span class="vertical-text">7731</span></th>
-                    <th class="col-header"><span class="vertical-text">9413</span></th>
-                    <th class="col-header thick-right"><span class="vertical-text">5082</span></th>
-                    <th class="col-header"><span class="vertical-text">Kelder</span></th>
-                    <th class="col-header"><span class="vertical-text">Zolder</span></th>
-                    <th class="col-header"><span class="vertical-text">Schuur</span></th>
-                    <th class="col-header"><span class="vertical-text">Keuken</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><th class="row-header">Miriam</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr><th class="row-header">DirkJaap</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr><th class="row-header">Hannah</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell_thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                <tr class="thick-bottom"><th class="row-header">Tommie</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
-                
-                <tr><th class="row-header">Kelder</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
-                <tr><th class="row-header">Zolder</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
-                <tr><th class="row-header">Schuur</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
-                <tr class="thick-bottom"><th class="row-header">Keuken</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="4"></td></tr>
-
-                <tr><th class="row-header">3820</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
-                <tr><th class="row-header">7731</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
-                <tr><th class="row-header">9413</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
-                <tr><th class="row-header">5082</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="blackout" colspan="8"></td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="selector-row">
-                <label>Jij bent:</label>
-                <select id="chatMe" onchange="updateChatView()">
-                    <option value="Miriam">Miriam</option>
-                    <option value="DirkJaap">DirkJaap</option>
-                    <option value="Hannah">Hannah</option>
-                    <option value="Tommie">Tommie</option>
-                    <option value="Joshua">Joshua</option>
-                    <option value="Judith">Judith</option>
-                    <option value="Micha">Micha</option>
-                    <option value="Annewil">Annewil</option>
-                </select>
-            </div>
-            <div class="selector-row">
-                <label>Bericht aan:</label>
-                <select id="chatTarget" onchange="updateChatView()">
-                    <option value="DirkJaap">DirkJaap</option>
-                    <option value="Miriam">Miriam</option>
-                    <option value="Hannah">Hannah</option>
-                    <option value="Tommie">Tommie</option>
-                    <option value="Joshua">Joshua</option>
-                    <option value="Judith">Judith</option>
-                    <option value="Micha">Micha</option>
-                    <option value="Annewil">Annewil</option>
-                </select>
+    <div class="main-container">
+        <!-- AIVD Header -->
+        <div class="aivd-header">
+            <svg width="60" height="70" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="120" fill="#003d73"/>
+                <path d="M50 20 L80 20 L80 60 L50 80 L20 60 L20 20 L50 20Z" fill="#fff" stroke="#003d73" stroke-width="2"/>
+                <path d="M45 25 L55 25 L55 35 L45 35 Z" fill="#003d73"/>
+                <circle cx="50" cy="40" r="5" fill="#003d73"/>
+                <path d="M40 45 L60 45" stroke="#003d73" stroke-width="2"/>
+                <path d="M35 50 L65 50" stroke="#003d73" stroke-width="2"/>
+            </svg>
+            <div class="aivd-header-text">
+                <h2>Algemene Inlichtingen- en Veiligheidsdienst</h2>
+                <p>Ministerie van Binnenlandse Zaken en Koninkrijksrelaties</p>
             </div>
         </div>
-        
-        <div class="chat-messages" id="chatGrid"></div>
 
-        <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Typ een beveiligd 1-op-1 bericht..." onkeypress="checkEnter(event)">
-            <button onclick="sendMessage()">Verzend</button>
+        <!-- INSTRUCTIEBLOK -->
+        <div class="code-instructie">
+            <h3>⚠️ GEHEIME TOEGANG</h3>
+            <p>Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht.</p>
+            <p>Voer hieronder jouw <strong>viercijferige dossiernummer</strong> in. Dit is de code waaronder jij bekend bent bij de AIVD.<br>
+            <em>Wees voorzichtig! Als iemand anders jouw code ziet, kunnen zij jouw geheime identiteit en opdracht stelen.</em></p>
+        </div>
+
+        <!-- INVOER VELD -->
+        <div class="code-entry-area">
+            <input type="password" id="codeInput" maxlength="4" placeholder="____" inputmode="numeric" onkeypress="checkEnter(event)">
+            <button onclick="verifyCode()">🔓 Open Dossier</button>
+        </div>
+        <div id="errorMsg">❌ Foute code! De AIVD heeft je bijna te pakken. Probeer opnieuw.</div>
+
+        <!-- PASPOORT UITVOER (Wordt ingevuld door JS) -->
+        <div id="passportOutput" class="content-grid"></div>
+
+        <!-- LOGIGRAM RASTER -->
+        <div class="matrix-container" id="matrixContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="blackout"></th>
+                        <th class="col-header"><span class="vertical-text">Agent Vodka</span></th>
+                        <th class="col-header"><span class="vertical-text">Sakura</span></th>
+                        <th class="col-header"><span class="vertical-text">Master Dragon</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Mossad Sphinx</span></th>
+                        <th class="col-header"><span class="vertical-text">4912</span></th>
+                        <th class="col-header"><span class="vertical-text">7731</span></th>
+                        <th class="col-header"><span class="vertical-text">1594</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">3820</span></th>
+                        <th class="col-header"><span class="vertical-text">6205</span></th>
+                        <th class="col-header"><span class="vertical-text">9413</span></th>
+                        <th class="col-header"><span class="vertical-text">5082</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">2367</span></th>
+                        <th class="col-header"><span class="vertical-text">Garde</span></th>
+                        <th class="col-header"><span class="vertical-text">Oude krant</span></th>
+                        <th class="col-header"><span class="vertical-text">Oude zaklamp</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Koffiemok</span></th>
+                        <th class="col-header"><span class="vertical-text">Strandhanddoek</span></th>
+                        <th class="col-header"><span class="vertical-text">Omgekeerde Bloempot</span></th>
+                        <th class="col-header"><span class="vertical-text">Opgerolde Paraplu</span></th>
+                        <th class="col-header thick-right"><span class="vertical-text">Gereedschapskist</span></th>
+                        <th class="col-header"><span class="vertical-text">Kelder</span></th>
+                        <th class="col-header"><span class="vertical-text">Zolder</span></th>
+                        <th class="col-header"><span class="vertical-text">Schuur</span></th>
+                        <th class="col-header"><span class="vertical-text">Keuken</span></th>
+                        <th class="col-header"><span class="vertical-text">Badkamer</span></th>
+                        <th class="col-header"><span class="vertical-text">Tuinhuisje</span></th>
+                        <th class="col-header"><span class="vertical-text">De Hal</span></th>
+                        <th class="col-header"><span class="vertical-text">De Garage</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th class="row-header">Miriam</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">DirkJaap</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Hannah</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Tommie</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Joshua</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Judith</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Micha</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                    <tr><th class="row-header">Annewil</th><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        let messageDatabase = [];
+        // Database met de codes en bijbehorende paspoort HTML (Tommie is Duits)
+        const passportData = {
+            "4912": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #01</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Agent Vodka</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Agent Vodka <span style="color:#999; font-size:0.8em;">(Echte identiteit: Miriam)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> De spion gewapend met de GARDE is in de KELDER.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> TOMMIE opereert met de activeringscode 3820.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> De spion op de ZOLDER leest een OUDE KRANT.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> De spion met codenaam SAKURA heet DIRKJAAP.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> De GEREEDSCHAPSKIST hoort bij code 2367.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de KEUKEN, drink drie slokken en zeg: <em>"De garde is vandaag erg bot."</em></p>
+                </div>
+            </div>`,
+            "7731": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #02</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Sakura</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Sakura <span style="color:#999; font-size:0.8em;">(Echte identiteit: DirkJaap)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Mijn eigen persoonlijke code luidt 7731.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> HANNAH gebruikt de codenaam MASTER DRAGON.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> In de dampende KEUKEN staat iemand met een KOFFIEMOK.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> In het TUINHUISJE zit MADAME CROISSANT.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> Activeringscode 4912 hoort bij de KELDER.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de HAL. Leg een krant op de tafel en wacht op de zin: <em>"Ja, het is weer kommer en kwel."</em></p>
+                </div>
+            </div>`,
+            "1594": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #03</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Master Dragon</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Master Dragon <span style="color:#999; font-size:0.8em;">(Echte identiteit: Hannah)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Ik moet met een OUDE ZAKLAMP de SCHUUR doorzoeken.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> JOSHUA opereert onder de codenaam SIR JAMES.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> De geheime code 9413 hoort bij de OMGEKEERDE BLOEMPOT.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> Activeringscode 3820 is gekoppeld aan de KOFFIEMOK.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> Spion MICHA heeft zich gepositioneerd in DE HAL.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Luid de bel op een onbewaakt moment. Ga direct daarna naar de CENTRALE ONTMOETINGSPLEK, schijn driemaal met je zaklamp en drop een briefje met je codenaam in de box.</p>
+                </div>
+            </div>`,
+            "3820": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #04</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Mossad Sphinx</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Tarnname:</strong> Mossad Sphinx <span style="color:#999; font-size:0.8em;">(Wahre Identität: Tommie)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME ANWEISUNG:</strong> Du bist auf der Flucht vor dem AIVD. Dieses Safehouse ist dein einziger Zufluchtsort. Der AIVD ist dir auf den Fersen, aber sie wissen noch nicht, *wer* du bist, was dein Auftrag ist, welches Werkzeug du benutzt und wo du dich genau aufhältst.<br><br>Aber, kannst du den Gästen in diesem Safehouse vertrauen? Sind sie vielleicht ebenfalls Geheimagenten, genau wie du?<br><br><em>Der Name, unter dem man dich hier kennt, ist dein Tarnname. Sie wollen wissen, wer du wirklich bist, mit dem Code des AIVD, was du hier mit welchem Werkzeug zu erledigen hast, und schließlich, wo du dich versteckst.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Mein zugewiesener Standort ist die KÜCHE.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> JUDITH trägt den Decknamen MADAME CROISSANT.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> Der Aktivierungscode 5082 gehört zum ZUSAMMENGEROLLTEN REGENSCHIRM.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> Der Spion mit der ALTEN ZEITUNG hat den Code 7731.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> Das Ziel mit dem Namen ANNEWIL befindet sich in der GARAGE.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHER AUFTRAG (AIVD BEKÄMPFEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Wenn die Klingel ertönt, gehe mit deinem Becher zum GARTENHAUS. Prostiere dem ersten Spion. Wenn diese*r sagt: <em>"Sphinx, es ist kalt draußen"</em>, nenne deinen Decknamen.</p>
+                </div>
+            </div>`,
+            "6205": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #05</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Sir James</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Sir James <span style="color:#999; font-size:0.8em;">(Echte identiteit: Joshua)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Mijn code 6205 zit gewikkeld in mijn STRANDHANDDOEK.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> MICHA maakt deel uit van het team als UNCLE SAM.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> De GEREEDSCHAPSKIST bevindt zich in DE GARAGE.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> De codenaam AGENT VODKA hoort bij de KELDER.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> HANNAH voert haar actie uit met code 1594.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, sla je strandhanddoek om en loop naar de GARAGE. Vraag aan de eerste persoon: <em>"Heeft u het gereedschap voor de Sir?"</em></p>
+                </div>
+            </div>`,
+            "9413": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #06</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Madame Croissant</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Madame Croissant <span style="color:#999; font-size:0.8em;">(Echte identiteit: Judith)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Mijn code is 9413 en ik zit in het TUINHUISJE.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> ANNEWIL gebruikt de stoere codenaam DJANGO.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> Code 1594 moet worden ingevoerd in de SCHUUR.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> De OPGEROLDE PARAPLU is van spion UNCLE SAM.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> TOMMIE gebruikt de codenaam MOSSAD SPHINX.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, neem je omgekeerde bloempot mee naar de HAL. Zet hem neer met een briefje eronder: <em>"Madame Croissant is hier geweest."</em></p>
+                </div>
+            </div>`,
+            "5082": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #07</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Uncle Sam</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Uncle Sam <span style="color:#999; font-size:0.8em;">(Echte identiteit: Micha)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Ik sta te wachten in DE HAL met code 5082.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> Uit een hack blijkt dat MIRIAM code 4912 heeft.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> De spion met code 7731 zit op de ZOLDER.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> De OUDE ZAKLAMP hoort bij codenaam MASTER DRAGON.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> Agent JOSHUA heeft zich verschanst in de BADKAMER.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, loop met een opgestoken paraplu naar de SCHUUR. Klop in ritme en roep: <em>"Uncle Sam vraagt om onderdak!"</em></p>
+                </div>
+            </div>`,
+            "2367": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222;">
+                <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
+                    <h2 style="margin:0;">DOSSIER #08</h2>
+                    <span style="color:#d32f2f; font-weight:bold; background:#f5f5f5; padding:2px 8px; border-radius:12px;">Django</span>
+                </div>
+                <div style="font-size:0.8em; color:#555; margin-bottom:10px;"><strong>Schuilnaam:</strong> Django <span style="color:#999; font-size:0.8em;">(Echte identiteit: Annewil)</span></div>
+                <div style="background:#f8f9fa; border-left:6px solid #003d73; padding:12px; margin-bottom:12px; font-size:0.8em; line-height:1.5;">
+                    <strong>GEHEIME INSTRUCTIE:</strong> Je bent op de vlucht voor de AIVD. Dit safehouse is je enige toevlucht. De AIVD is je op het spoor, maar ze weten nog niet wíe je bent, wat je opdracht is, welk gereedschap je gebruikt en waar je je precies bevindt.<br><br>Maar, kun je de gasten in dit safehouse vertrouwen? Zijn zij misschien ook geheim agent, net als jij?<br><br><em>De naam waarmee men hier jou kent is jouw schuilnaam. Zij willen weten wie je werkelijk bent, met de code van de AIVD en wat je hier komt doen met welk gereedschap, tot slot waar jij je schuilhoudt.</em>
+                </div>
+                <ul style="flex-grow:1; margin:0 0 15px 0; padding:0; list-style:none; font-size:0.85em; line-height:1.5;">
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo A]</strong> Mijn code is 2367 en ik heb de GEREEDSCHAPSKIST.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo B]</strong> De spion in de BADKAMER heeft een STRANDHANDDOEK.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo C]</strong> De code 4912 hoort onlosmakelijk bij de GARDE.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo D]</strong> JUDITH heeft de OMGEKEERDE BLOEMPOT onder haar hoede.</li>
+                    <li style="padding:4px 0; border-bottom:1px dotted #ccc;"><strong>[Memo E]</strong> De code van agent SAKURA is vastgesteld op 7731.</li>
+                </ul>
+                <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
+                    <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, neem een stuk gereedschap in je hand, ga naar de ZOLDER en zeg: <em>"Django heeft hier dringende reparaties uit te voeren."</em></p>
+                </div>
+            </div>`
+        };
 
-        // Schakelen tussen + en - (conform de afbeelding)
+        // Schakelen tussen + en - in het logigram
         function toggle(cell) {
             if (cell.innerHTML === "") {
                 cell.innerHTML = "–";
@@ -168,54 +441,32 @@
             }
         }
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const messageText = input.value.trim();
-            if (messageText === "") return;
+        // Code verifiëren
+        function verifyCode() {
+            const code = document.getElementById('codeInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const output = document.getElementById('passportOutput');
+            const matrix = document.getElementById('matrixContainer');
 
-            const me = document.getElementById('chatMe').value;
-            const target = document.getElementById('chatTarget').value;
-
-            if (me === target) {
-                alert("Je kunt geen berichten naar jezelf sturen, agent.");
-                return;
+            if (passportData[code]) {
+                output.innerHTML = passportData[code];
+                output.style.display = 'flex';
+                matrix.style.display = 'block'; // Toon het logigram
+                errorMsg.style.display = 'none';
+            } else {
+                output.style.display = 'none';
+                matrix.style.display = 'none';
+                errorMsg.style.display = 'block';
+                document.getElementById('codeInput').value = '';
             }
-
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            messageDatabase.push({ from: me, to: target, text: messageText, time: time });
-
-            input.value = "";
-            updateChatView();
         }
 
-        function updateChatView() {
-            const me = document.getElementById('chatMe').value;
-            const target = document.getElementById('chatTarget').value;
-            const chatGrid = document.getElementById('chatGrid');
-            
-            chatGrid.innerHTML = ""; 
-
-            const conversation = messageDatabase.filter(msg => 
-                (msg.from === me && msg.to === target) || (msg.from === target && msg.to === me)
-            );
-
-            if (conversation.length === 0) {
-                chatGrid.innerHTML = `<div style="text-align:center; color:#8696a0; font-size:0.85em; margin-top:20px;">Geen gecodeerde berichten met deze agent. Het kanaal is schoon.</div>`;
-                return;
+        // Enter toets in het veld
+        function checkEnter(e) {
+            if (e.key === 'Enter') {
+                verifyCode();
             }
-
-            conversation.forEach(msg => {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = (msg.from === me) ? "message sent" : "message received";
-                msgDiv.innerHTML = `${msg.text}<span class="timestamp">${msg.time}</span>`;
-                chatGrid.appendChild(msgDiv);
-            });
-
-            chatGrid.scrollTop = chatGrid.scrollHeight;
         }
-
-        function checkEnter(e) { if (e.key === 'Enter') sendMessage(); }
-        updateChatView();
     </script>
 </body>
 </html>
