@@ -1,9 +1,18 @@
+Je hebt gelijk. De vorige grids waren rommelig door onzichtbare `colspan` en `rowspan` toestanden. Een **echt L-vormig logigram** moet gewoon bestaan uit **losse, perfect uitgelijnde tabellen** die visueel aan elkaar geplakt lijken.
+
+Daarnaast:
+1. **De Duitse spion (Tommie)** moet **geen andere spion tegenkomen**, want niemand anders heeft de opdracht om naar hem toe te gaan. Het protocol moet dus veranderen: hij moet *iets doen op zijn eigen locatie*, zonder interactie.
+2. **DirkJaap's opdracht** moet aangepast worden van "wacht op de zin" naar **"Roep luid: Het is kommer en kwel!"**, zodat hij actie onderneemt.
+
+Hier is de **perfect uitgelijnde, volwaardige L-vormige matrix** met de aangepaste paspoorten.
+
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕵️‍♂️ AIVD - Dossier Toegang & Logigram</title>
+    <title>🕵️‍♂️ AIVD - L-Vorm Logigram & Dossiers</title>
     <style>
         /* Algemene opmaak */
         body {
@@ -17,7 +26,7 @@
             color: #e0e0e0;
         }
 
-        .main-container { max-width: 1000px; width: 100%; }
+        .main-container { max-width: 1100px; width: 100%; }
 
         /* AIVD Header */
         .aivd-header {
@@ -25,7 +34,7 @@
             background: #1e1e1e;
             border-bottom: 4px solid #003d73;
             padding: 15px 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-radius: 8px 8px 0 0;
             box-sizing: border-box;
             display: flex;
@@ -36,7 +45,7 @@
         .aivd-header-text h2 { margin: 0; font-size: 1.2em; font-weight: bold; color: #fff; }
         .aivd-header-text p { margin: 4px 0 0 0; font-size: 0.9em; color: #b0b0b0; }
 
-        /* Code-instructie */
+        /* Code-instructie & Invoer */
         .code-instructie {
             background: #1a1a2e;
             border-left: 8px solid #d32f2f;
@@ -48,128 +57,97 @@
         .code-instructie p { margin: 5px 0; line-height: 1.6; color: #d1d5db; }
         .code-instructie strong { color: #fbbf24; }
 
-        /* Dubbele Invoervelden */
         .code-entry-area {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
-        .entry-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .entry-row label {
-            color: #9ca3af;
-            font-size: 0.9em;
-            width: 100px;
-            text-align: right;
-        }
+        .entry-row { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .entry-row label { color: #9ca3af; font-size: 0.9em; width: 100px; text-align: right; }
         .code-entry-area input {
-            padding: 10px 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: center;
-            letter-spacing: 4px;
-            background: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 8px;
-            color: #fff;
-            width: 180px;
-            outline: none;
+            padding: 10px 15px; font-size: 1.2em; font-weight: bold; text-align: center;
+            background: #2a2a2a; border: 2px solid #444; border-radius: 8px; color: #fff; width: 180px; outline: none;
         }
         .code-entry-area input:focus { border-color: #38bdf8; }
-        
         .code-entry-area button {
-            padding: 12px 30px;
-            font-size: 1.1em;
-            background: #003d73;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
+            padding: 12px 30px; font-size: 1.1em; background: #003d73; color: #fff; border: none; border-radius: 8px; cursor: pointer; margin-top: 5px;
         }
         .code-entry-area button:hover { background: #005a9e; }
-
         #errorMsg { color: #ef4444; font-weight: bold; display: none; text-align: center; margin-bottom: 20px; }
 
         /* Paspoort uitvoer */
-        #passportOutput { display: none; justify-content: center; margin-bottom: 30px; }
+        #passportOutput { display: none; justify-content: center; margin-bottom: 40px; }
 
-        /* --- L-VORMIGE LOGIGRAM MATRIX --- */
-        .matrix-container {
+        /* --- PERFECT UITGELIJNDE L-VORMIGE LOGIGRAM MATRIX --- */
+        .matrix-wrapper {
             background: #1e1e1e;
             padding: 30px 20px;
             border-radius: 8px;
             border: 1px solid #333;
-            display: none;
+            display: none; /* Wordt zichtbaar na code-invoer */
             overflow-x: auto;
             margin-bottom: 20px;
+            justify-content: center;
         }
 
-        .logigram-table {
-            border-collapse: collapse;
+        /* Flex-container voor de perfecte uitlijning */
+        .grid-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: fit-content;
             margin: 0 auto;
-            border: 2px solid #38bdf8;
+            border: 2px solid #38bdf8; /* Dikke blauwe buitenrand */
         }
-        
-        .logigram-table td, .logigram-table th {
+
+        .grid-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Celstijlen */
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
             border: 1px solid #5a5a5a;
-            width: 40px; height: 40px;
-            text-align: center;
-            vertical-align: middle;
-            padding: 0;
-        }
-        
-        /* Koppen */
-        .logigram-table th.row-header {
-            text-align: right; padding: 0 15px 0 5px; 
-            background: #252525; color: #fff; font-size: 0.8em; font-weight: normal;
-        }
-        .logigram-table th.col-header {
-            height: 120px; background: #252525; vertical-align: bottom; padding-bottom: 10px;
-        }
-        .logigram-table .vertical-text {
-            transform: rotate(-90deg); white-space: nowrap; display: inline-block; 
-            color: #38bdf8; font-size: 0.8em; font-weight: bold;
+            box-sizing: border-box;
+            font-size: 14px;
         }
 
-        /* Dikke blauwe lijnen en L-vormige lege ruimte */
-        .logigram-table .thick-right { border-right: 3px solid #38bdf8; }
-        .logigram-table .thick-bottom { border-bottom: 3px solid #38bdf8; }
+        /* Specifieke celtypen */
+        .cell.header-row { width: 160px; justify-content: flex-end; padding-right: 10px; background: #252525; color: #fff; font-weight: normal; border-right: 1px solid #5a5a5a; }
+        .cell.header-col { height: 120px; writing-mode: vertical-rl; transform: rotate(180deg); background: #252525; color: #38bdf8; font-weight: bold; padding-bottom: 10px; }
         
-        /* Zwarte vlakken voor de L-vorm */
-        .logigram-table .blackout {
-            background: #121212;
-            border: 1px solid #121212;
-        }
-        .logigram-table .blackout-thick {
-            background: #121212;
-            border-top: 3px solid #38bdf8;
-            border-left: 3px solid #38bdf8;
-        }
+        .cell.empty-black { background: #121212; border-color: #121212; }
+        .cell.empty-black-thick-top { background: #121212; border-top: 3px solid #38bdf8; border-left: 1px solid #121212; border-right: 1px solid #121212; border-bottom: 1px solid #121212; }
+        .cell.empty-black-thick-side { background: #121212; border-left: 3px solid #38bdf8; border-top: 1px solid #121212; border-right: 1px solid #121212; border-bottom: 1px solid #121212; }
 
-        .logigram-table .cell { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
-        .logigram-table .cell:hover { background: #2a2a2a; }
-        .logigram-table .check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
-        .logigram-table .cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+        /* Blauwe dikke scheidingslijnen */
+        .cell.thick-right { border-right: 3px solid #38bdf8; }
+        .cell.thick-bottom { border-bottom: 3px solid #38bdf8; }
+        .cell.thick-top { border-top: 3px solid #38bdf8; }
+
+        /* Logica in de cellen */
+        .cell.clickable { cursor: pointer; font-weight: bold; font-size: 1.2em; user-select: none; }
+        .cell.clickable:hover { background: #2a2a2a; }
+        .cell.check { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+        .cell.cross { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
 
         @media print {
             body { background: white; color: black; padding: 0; }
-            .aivd-header, .code-instructie, .code-entry-area, #errorMsg, .print-btn { display: none !important; }
+            .aivd-header, .code-instructie, .code-entry-area, #errorMsg { display: none !important; }
             #passportOutput { display: flex !important; }
-            .matrix-container { display: block !important; border: none; padding: 0; background: white; }
-            .logigram-table { border: 2px solid #000; }
-            .logigram-table td, .logigram-table th { border: 1px solid #ccc; color: black; }
-            .logigram-table th.col-header, .logigram-table th.row-header { background: #f0f0f0; color: black; }
-            .logigram-table .vertical-text { color: black; }
-            .logigram-table .thick-right, .logigram-table .thick-bottom { border-color: #000; }
-            .logigram-table .blackout, .logigram-table .blackout-thick { background: white; }
+            .matrix-wrapper { display: flex !important; border: none; padding: 0; background: white; }
+            .grid-container { border: 2px solid #000; }
+            .cell { border-color: #ccc; color: black; }
+            .cell.header-row, .cell.header-col { background: #f0f0f0; color: black; }
+            .cell.thick-right, .cell.thick-bottom, .cell.thick-top { border-color: #000; }
+            .cell.empty-black, .cell.empty-black-thick-top, .cell.empty-black-thick-side { background: white; border-color: white; }
         }
     </style>
 </head>
@@ -214,187 +192,16 @@
 
         <div id="passportOutput"></div>
 
-        <!-- L-VORMIGE LOGIGRAM MATRIX -->
-        <div class="matrix-container" id="matrixContainer">
-            <table class="logigram-table">
-                <thead>
-                    <tr>
-                        <!-- L-vormige lege zwarte hoek -->
-                        <th class="blackout" rowspan="2" colspan="2"></th>
-                        
-                        <!-- Codes -->
-                        <th class="col-header thick-right"><span class="vertical-text">4912</span></th>
-                        <th class="col-header"><span class="vertical-text">7731</span></th>
-                        <th class="col-header"><span class="vertical-text">1594</span></th>
-                        <th class="col-header thick-right"><span class="vertical-text">3820</span></th>
-                        <th class="col-header"><span class="vertical-text">6205</span></th>
-                        <th class="col-header"><span class="vertical-text">9413</span></th>
-                        <th class="col-header"><span class="vertical-text">5082</span></th>
-                        <th class="col-header thick-right"><span class="vertical-text">2367</span></th>
-
-                        <!-- Voorwerpen -->
-                        <th class="col-header thick-right"><span class="vertical-text">Garde</span></th>
-                        <th class="col-header"><span class="vertical-text">Oude krant</span></th>
-                        <th class="col-header"><span class="vertical-text">Oude zaklamp</span></th>
-                        <th class="col-header thick-right"><span class="vertical-text">Koffiemok</span></th>
-                        <th class="col-header"><span class="vertical-text">Strandhanddoek</span></th>
-                        <th class="col-header"><span class="vertical-text">Omgekeerde Bloempot</span></th>
-                        <th class="col-header"><span class="vertical-text">Opgerolde Paraplu</span></th>
-                        <th class="col-header thick-right"><span class="vertical-text">Gereedschapskist</span></th>
-
-                        <!-- Locaties -->
-                        <th class="col-header thick-right"><span class="vertical-text">Kelder</span></th>
-                        <th class="col-header"><span class="vertical-text">Zolder</span></th>
-                        <th class="col-header"><span class="vertical-text">Schuur</span></th>
-                        <th class="col-header"><span class="vertical-text">Keuken</span></th>
-                        <th class="col-header"><span class="vertical-text">Badkamer</span></th>
-                        <th class="col-header"><span class="vertical-text">Tuinhuisje</span></th>
-                        <th class="col-header"><span class="vertical-text">De Hal</span></th>
-                        <th class="col-header"><span class="vertical-text">De Garage</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- ECHTE NAMEN (Rijen) -->
-                    <tr>
-                        <th class="row-header" colspan="2">Miriam</th>
-                        <!-- Codes -->
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <!-- Voorwerpen -->
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <!-- Locaties -->
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">DirkJaap</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Hannah</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Tommie</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Joshua</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Judith</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Micha</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="row-header" colspan="2">Annewil</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-
-                    <!-- Tweede deel L-vorm: CODENAMEN -->
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right thick-bottom" colspan="2" style="border-bottom: 1px solid #5a5a5a;">Agent Vodka</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Sakura</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Master Dragon</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Mossad Sphinx</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Sir James</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Madame Croissant</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Uncle Sam</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                    <tr>
-                        <th class="blackout-thick" colspan="2"></th>
-                        <td class="blackout" colspan="8"></td>
-                        <th class="row-header thick-right" colspan="2">Django</th>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell thick-right" onclick="toggle(this)"></td>
-                        <td class="cell thick-right" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td><td class="cell" onclick="toggle(this)"></td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- PERFECT UITGELIJND L-VORM LOGIGRAM -->
+        <div class="matrix-wrapper" id="matrixWrapper">
+            <div class="grid-container" id="logigramGrid">
+                <!-- Grid wordt dynamisch door JavaScript gegenereerd voor perfecte uitlijning -->
+            </div>
         </div>
     </div>
 
     <script>
-        // Database met de combinatie van CODE + ECHTE NAAM. Tommie is Duits.
+        // Database met de combinatie van CODE + ECHTE NAAM.
         const passportData = {
             "4912miriam": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
                 <div style="border-bottom:3px solid #d32f2f; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between;">
@@ -435,7 +242,7 @@
                 </ul>
                 <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
                     <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHE OPDRACHT (AIVD TEGENWERKEN)</h4>
-                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de HAL. Leg een krant op de tafel en wacht op de zin: <em>"Ja, het is weer kommer en kwel."</em></p>
+                    <p style="margin:0; font-size:0.85em;">Als de bel luidt, ga direct naar de HAL. <strong>Roep luid: <em>"Het is kommer en kwel!"</em></strong></p>
                 </div>
             </div>`,
             "1594hannah": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
@@ -477,7 +284,7 @@
                 </ul>
                 <div style="background:#fcf8e3; border-left:6px solid #f0ad4e; padding:12px; border-radius:4px;">
                     <h4 style="margin:0 0 4px 0; font-size:0.8em; color:#a47d2c;">⚡ PRAKTISCHER AUFTRAG (AIVD BEKÄMPFEN)</h4>
-                    <p style="margin:0; font-size:0.85em;">Wenn die Klingel ertönt, gehe mit deinem Becher zum GARTENHAUS. Prostiere dem ersten Spion. Wenn diese*r sagt: <em>"Sphinx, es ist kalt draußen"</em>, nenne deinen Decknamen.</p>
+                    <p style="margin:0; font-size:0.85em;">Wenn die Klingel ertönt, gehe in die KÜCHE, schenke dir einen Tee ein, stelle dich ans Fenster und rufe leise: <em>"Sphinx, ich bin allein."</em></p>
                 </div>
             </div>`,
             "6205joshua": `<div class="passport" style="background:#fff; border-radius:12px; padding:20px; border:2px solid #1a1a1a; color:#222; max-width:600px;">
@@ -566,34 +373,164 @@
             </div>`
         };
 
-        // Schakelen tussen + en - in het logigram
+        // Schakelen tussen + en -
         function toggle(cell) {
             if (cell.innerHTML === "") {
                 cell.innerHTML = "–";
-                cell.className = "cell cross";
+                cell.className = "cell clickable cross";
             } else if (cell.innerHTML === "–") {
                 cell.innerHTML = "+";
-                cell.className = "cell check";
+                cell.className = "cell clickable check";
             } else {
                 cell.innerHTML = "";
-                cell.className = "cell";
+                cell.className = "cell clickable";
             }
         }
 
-        // Dubbele verificatie
+        // Genereer het perfect uitgelijnde L-vormige logigram met behulp van JavaScript en Flexbox
+        function buildGrid() {
+            const grid = document.getElementById('logigramGrid');
+            grid.innerHTML = ''; // Leeg de container
+
+            // Data definities
+            const rowHeaders = ["Miriam", "DirkJaap", "Hannah", "Tommie", "Joshua", "Judith", "Micha", "Annewil"];
+            const colCodes = ["4912", "7731", "1594", "3820", "6205", "9413", "5082", "2367"];
+            const colItems = ["Garde", "Oude krant", "Oude zaklamp", "Koffiemok", "Strandhanddoek", "Omgekeerde Bloempot", "Opgerolde Paraplu", "Gereedschapskist"];
+            const colLocations = ["Kelder", "Zolder", "Schuur", "Keuken", "Badkamer", "Tuinhuisje", "De Hal", "De Garage"];
+
+            const colHeaders = [
+                ...colCodes.map(c => ({text: c, type: 'code'})),
+                ...colItems.map(c => ({text: c, type: 'item'})),
+                ...colLocations.map(c => ({text: c, type: 'loc'})),
+            ];
+
+            // --- RIJ 1: De bovenste lege hoek + Kolomkoppen ---
+            const row1 = document.createElement('div');
+            row1.className = 'grid-row';
+
+            // Lege plek linksboven (2 kolommen breed voor de L-vorm)
+            const empty1 = document.createElement('div');
+            empty1.className = 'cell empty-black';
+            empty1.style.width = '160px'; // Breedte van de header-rij
+            empty1.style.height = '120px';
+            empty1.style.borderBottom = '3px solid #38bdf8'; // Dikke lijn onder de hoek
+            row1.appendChild(empty1);
+
+            // Kolomkoppen genereren
+            colHeaders.forEach((h, index) => {
+                const colHeader = document.createElement('div');
+                let cssClass = 'cell header-col';
+                
+                // Dikke lijnen toevoegen op de juiste plekken (na elk blok)
+                if ((index+1) % 8 === 0 && index !== colHeaders.length-1) {
+                    cssClass += ' thick-right';
+                }
+                
+                colHeader.className = cssClass;
+                colHeader.style.height = '120px';
+                colHeader.style.borderBottom = '3px solid #38bdf8';
+                colHeader.textContent = h.text;
+                row1.appendChild(colHeader);
+            });
+            grid.appendChild(row1);
+
+
+            // --- RIJ 2 T/M 9: Echte namen (De bovenste horizontale balk van de L) ---
+            rowHeaders.forEach((name, rowIndex) => {
+                const row = document.createElement('div');
+                row.className = 'grid-row';
+
+                // 1. Rij-header (Echte naam)
+                const rowHeader = document.createElement('div');
+                rowHeader.className = 'cell header-row';
+                rowHeader.textContent = name;
+                
+                // Als het de laatste rij is, dikke blauwe lijn onder de header
+                if (rowIndex === rowHeaders.length - 1) {
+                    rowHeader.classList.add('thick-bottom');
+                }
+                row.appendChild(rowHeader);
+
+                // 2. De Codes, Voorwerpen en Locaties
+                colHeaders.forEach((h, colIndex) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell clickable';
+                    cell.setAttribute('data-row', name);
+                    cell.setAttribute('data-col', h.text);
+                    cell.onclick = function() { toggle(this); };
+
+                    // Dikke lijnen toevoegen (na elk blok van 8)
+                    if ((colIndex+1) % 8 === 0 && colIndex !== colHeaders.length-1) {
+                        cell.classList.add('thick-right');
+                    }
+                    // Als het de laatste rij namen is, dikke blauwe lijn onder de cellen
+                    if (rowIndex === rowHeaders.length - 1) {
+                        cell.classList.add('thick-bottom');
+                    }
+                    row.appendChild(cell);
+                });
+                grid.appendChild(row);
+            });
+
+
+            // --- RIJ 10 T/M 17: Codenamen (Het verticale been van de L) ---
+            colHeaders.slice(0, 8).forEach((codename, index) => {
+                const row = document.createElement('div');
+                row.className = 'grid-row';
+
+                // 1. De lege zwarte ruimte links
+                const emptySpace = document.createElement('div');
+                emptySpace.className = 'cell empty-black';
+                emptySpace.style.width = '160px';
+                if (index === 0) emptySpace.classList.add('empty-black-thick-top');
+                if (index === colHeaders.slice(0, 8).length - 1) emptySpace.classList.add('thick-bottom');
+                row.appendChild(emptySpace);
+
+                // 2. De Codenaam als rij-header (die in de L valt)
+                const rowHeader = document.createElement('div');
+                rowHeader.className = 'cell header-row thick-right'; // Dikke lijn rechts van de codenaam
+                rowHeader.textContent = codename.text;
+                if (index === colHeaders.slice(0, 8).length - 1) rowHeader.classList.add('thick-bottom');
+                row.appendChild(rowHeader);
+
+                // 3. De bijbehorende cellen (Voorwerpen en Locaties)
+                colHeaders.slice(8).forEach((h, colIndex) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell clickable';
+                    cell.setAttribute('data-row', codename.text);
+                    cell.setAttribute('data-col', h.text);
+                    cell.onclick = function() { toggle(this); };
+
+                    if ((colIndex+1) % 8 === 0 && colIndex !== colHeaders.slice(8).length-1) {
+                        cell.classList.add('thick-right');
+                    }
+                    if (index === colHeaders.slice(0, 8).length - 1) {
+                        cell.classList.add('thick-bottom');
+                    }
+                    row.appendChild(cell);
+                });
+                grid.appendChild(row);
+            });
+        }
+
+        // Roep de grid builder aan bij het laden
+        buildGrid();
+
+
+        // Dubbele verificatie voor de code
         function verifyCode() {
             const code = document.getElementById('codeInput').value.toLowerCase().trim();
             const name = document.getElementById('nameInput').value.toLowerCase().trim();
-            const key = code + name; // Combineer code + naam tot 1 sleutel
+            const key = code + name; 
             
             const errorMsg = document.getElementById('errorMsg');
             const output = document.getElementById('passportOutput');
-            const matrix = document.getElementById('matrixContainer');
+            const matrix = document.getElementById('matrixWrapper');
 
             if (passportData[key]) {
                 output.innerHTML = passportData[key];
                 output.style.display = 'flex';
-                matrix.style.display = 'block'; // Toon het logigram
+                matrix.style.display = 'flex';
                 errorMsg.style.display = 'none';
             } else {
                 output.style.display = 'none';
@@ -604,7 +541,6 @@
             }
         }
 
-        // Enter toets in het veld
         function checkEnter(e) {
             if (e.key === 'Enter') {
                 verifyCode();
@@ -613,3 +549,4 @@
     </script>
 </body>
 </html>
+```
