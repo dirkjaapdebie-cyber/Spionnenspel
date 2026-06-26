@@ -1,12 +1,3 @@
-Je hebt gelijk. De vorige grids waren rommelig door onzichtbare `colspan` en `rowspan` toestanden. Een **echt L-vormig logigram** moet gewoon bestaan uit **losse, perfect uitgelijnde tabellen** die visueel aan elkaar geplakt lijken.
-
-Daarnaast:
-1. **De Duitse spion (Tommie)** moet **geen andere spion tegenkomen**, want niemand anders heeft de opdracht om naar hem toe te gaan. Het protocol moet dus veranderen: hij moet *iets doen op zijn eigen locatie*, zonder interactie.
-2. **DirkJaap's opdracht** moet aangepast worden van "wacht op de zin" naar **"Roep luid: Het is kommer en kwel!"**, zodat hij actie onderneemt.
-
-Hier is de **perfect uitgelijnde, volwaardige L-vormige matrix** met de aangepaste paspoorten.
-
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -478,12 +469,24 @@ Hier is de **perfect uitgelijnde, volwaardige L-vormige matrix** met de aangepas
                 const row = document.createElement('div');
                 row.className = 'grid-row';
 
-                // 1. De lege zwarte ruimte links
+                // 1. De lege zwarte ruimte links (VAKJES NAAR RECHTS VERSCHOVEN)
+                // We voegen 4 lege zwarte cellen toe om de 4-hokjes-verschuiving te maken
                 const emptySpace = document.createElement('div');
                 emptySpace.className = 'cell empty-black';
-                emptySpace.style.width = '160px';
-                if (index === 0) emptySpace.classList.add('empty-black-thick-top');
-                if (index === colHeaders.slice(0, 8).length - 1) emptySpace.classList.add('thick-bottom');
+                emptySpace.style.width = '160px'; // Breedte van de naam-kolom
+                emptySpace.style.borderRight = '3px solid #38bdf8'; // Dikke lijn aan de rechterkant van dit lege blok
+                
+                // Voeg 4 extra lege cellen toe om de verschuiving te creëren
+                for (let i = 0; i < 4; i++) {
+                    const gapCell = document.createElement('div');
+                    gapCell.className = 'cell empty-black';
+                    // Als het de eerste rij van dit blok is, een dikke lijn boven de zwarte gaten
+                    if (index === 0) gapCell.classList.add('thick-top'); 
+                    // Als het de laatste rij is, dikke lijn onderaan
+                    if (index === colHeaders.slice(0, 8).length - 1) gapCell.classList.add('thick-bottom');
+                    row.appendChild(gapCell);
+                }
+
                 row.appendChild(emptySpace);
 
                 // 2. De Codenaam als rij-header (die in de L valt)
