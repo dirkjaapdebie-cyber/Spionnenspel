@@ -502,7 +502,12 @@
             colHeaders.forEach((h, index) => {
                 const colHeader = document.createElement('div');
                 let cssClass = 'cell header-col';
-                if (index === 7 || index === 15) cssClass += ' thick-right';
+                
+                // Dikke lijn NA de 8e kolom (Django) en NA de 16e kolom (Gereedschapskist)
+                if (index === 7 || index === 15) {
+                    cssClass += ' thick-right';
+                }
+                
                 colHeader.className = cssClass;
                 colHeader.style.height = '120px';
                 colHeader.style.borderBottom = '3px solid #38bdf8';
@@ -526,6 +531,8 @@
                     const cell = document.createElement('div');
                     cell.className = 'cell clickable';
                     cell.onclick = function() { toggle(this); };
+                    
+                    // Dikke lijn NA de 8e en 16e kolom in de rijen
                     if (colIndex === 7 || colIndex === 15) cell.classList.add('thick-right');
                     if (rowIndex === rowHeaders.length - 1) cell.classList.add('thick-bottom');
                     row.appendChild(cell);
@@ -562,6 +569,8 @@
                     const cell = document.createElement('div');
                     cell.className = 'cell clickable';
                     cell.onclick = function() { toggle(this); };
+                    
+                    // Dikke lijn NA de 8e kolom in de verticale poot (dus na Gereedschapskist)
                     if (colIndex === 7) cell.classList.add('thick-right');
                     if (index === colHeaders.slice(0, 8).length - 1) cell.classList.add('thick-bottom');
                     row.appendChild(cell);
