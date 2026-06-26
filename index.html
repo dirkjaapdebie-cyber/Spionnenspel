@@ -1,13 +1,16 @@
-Je hebt gelijk! In al die eerdere aanpassingen was ik zo gefocust op de **opmaak (de L-vorm en de dikke lijnen)** en de **Firebase-chat**, dat ik **de kern van het spel: de logica om de antwoorden te controleren** volledig over het hoofd heb gezien. 
+Nee hoor, het is helemaal niet moeilijk! Je hebt alleen een heel specifieke, logische volgorde nodig, en die had ik inderdaad in de vorige code niet strak genoeg vastgehouden. 
 
-**Het klopt:** Tot nu toe kun je alleen maar klikken om `+` en `-` in het grid te zetten, maar er is **geen enkele controle** of de puzzel correct is opgelost.
+**Wat er nu moet gebeuren, op volgorde:**
 
-Hier is de **volledig vernieuwde code**, nu met:
-1. **De controleknoppen**: Boven het grid staan twee knoppen: **"✅ Controleer Puzzel"** en **"❌ Wis Grid"**.
-2. **De juiste antwoorden database**: De code weet precies wat de echte oplossing is (gebaseerd op jouw memo's).
-3. **Automatische winnaarsdetectie**: Als het grid **100% correct** is ingevuld (alle 192 vakjes kloppen), dan wordt **automatisch** de winnaarsnaam uit de `verifyCode()` functie in de AIVD-tekst gezet, en verschijnt het overwinningsdocument. 
+1. **De speler vult het grid in** met groene vinkjes en rode kruisjes.
+2. **De speler klikt op "✅ Controleer Puzzel"**.
+3. **De code checkt** of het grid **100% perfect** klopt met de antwoorden.
+4. **Als het grid perfect is**, dan pas:
+   - Wordt de **winnaar** (de persoon die was ingelogd via de code + naam) definitief in de database gezet.
+   - Wordt de **AIVD-tekst** bijgewerkt met die ene naam.
+   - **Dan pas** wordt het overwinningsdocument zichtbaar gemaakt voor de winnaar (en later voor iedereen die de knop indrukt).
 
-Hier is de **definitieve, complete code**:
+Hier is de **gecorrigeerde code**. Het controlescript staat nu volledig los van het paspoort openen. **De volgorde klopt nu 100%**: Eerst de *puzzel oplossen*, dan de *naam publiceren*, dan pas het *document tonen*.
 
 ```html
 <!DOCTYPE html>
@@ -106,11 +109,17 @@ Hier is de **definitieve, complete code**:
 
         /* --- CONTROLE KNOPPEN --- */
         .control-panel {
+            display: none; /* Wordt zichtbaar zodra paspoort geopend is */
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .control-buttons {
             display: flex;
             gap: 20px;
-            justify-content: center;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .control-btn {
             padding: 10px 25px;
@@ -127,7 +136,7 @@ Hier is de **definitieve, complete code**:
         #validationMsg {
             text-align: center;
             font-size: 1.1em;
-            margin-bottom: 20px;
+            margin: 0;
             font-weight: bold;
             display: none;
         }
@@ -315,10 +324,12 @@ Hier is de **definitieve, complete code**:
 
         <div id="passportOutput"></div>
 
-        <!-- CONTROLE PANEEL -->
-        <div class="control-panel" id="controlPanel" style="display:none;">
-            <button class="control-btn check-btn" onclick="checkGrid()">✅ Controleer Puzzel</button>
-            <button class="control-btn reset-btn" onclick="resetGrid()">❌ Wis Grid</button>
+        <!-- CONTROLE PANEEL (WORDT ZICHTBAAR NA OPENEN DOSSIER) -->
+        <div class="control-panel" id="controlPanel">
+            <div class="control-buttons">
+                <button class="control-btn check-btn" onclick="checkGrid()">✅ Controleer Puzzel</button>
+                <button class="control-btn reset-btn" onclick="resetGrid()">❌ Wis Grid</button>
+            </div>
             <div id="validationMsg"></div>
         </div>
 
@@ -412,10 +423,8 @@ Hier is de **definitieve, complete code**:
         const chatRef = database.ref('spionnen_chat');
         const winnerRef = database.ref('spionnen_winnaar');
 
-        // --- DE JUISTE OPLOSSING VAN DE PUZZEL ---
-        // true = dikke groene plus (+), false = rood minnetje (-)
+        // --- DE JUISTE OPLOSSING VAN DE PUZZEL (GROEN = TRUE, ROOD = FALSE) ---
         const correctAnswers = {
-            // ECHTE NAAM -> CODENAAM
             "Miriam-Agent Vodka": true, "Miriam-Sakura": false, "Miriam-Master Dragon": false, "Miriam-Mossad Sphinx": false, "Miriam-Sir James": false, "Miriam-Madame Croissant": false, "Miriam-Uncle Sam": false, "Miriam-Django": false,
             "DirkJaap-Agent Vodka": false, "DirkJaap-Sakura": true, "DirkJaap-Master Dragon": false, "DirkJaap-Mossad Sphinx": false, "DirkJaap-Sir James": false, "DirkJaap-Madame Croissant": false, "DirkJaap-Uncle Sam": false, "DirkJaap-Django": false,
             "Hannah-Agent Vodka": false, "Hannah-Sakura": false, "Hannah-Master Dragon": true, "Hannah-Mossad Sphinx": false, "Hannah-Sir James": false, "Hannah-Madame Croissant": false, "Hannah-Uncle Sam": false, "Hannah-Django": false,
@@ -425,7 +434,6 @@ Hier is de **definitieve, complete code**:
             "Micha-Agent Vodka": false, "Micha-Sakura": false, "Micha-Master Dragon": false, "Micha-Mossad Sphinx": false, "Micha-Sir James": false, "Micha-Madame Croissant": false, "Micha-Uncle Sam": true, "Micha-Django": false,
             "Annewil-Agent Vodka": false, "Annewil-Sakura": false, "Annewil-Master Dragon": false, "Annewil-Mossad Sphinx": false, "Annewil-Sir James": false, "Annewil-Madame Croissant": false, "Annewil-Uncle Sam": false, "Annewil-Django": true,
 
-            // CODENAAM -> CODE
             "Agent Vodka-4912": true, "Agent Vodka-7731": false, "Agent Vodka-1594": false, "Agent Vodka-3820": false, "Agent Vodka-6205": false, "Agent Vodka-9413": false, "Agent Vodka-5082": false, "Agent Vodka-2367": false,
             "Sakura-4912": false, "Sakura-7731": true, "Sakura-1594": false, "Sakura-3820": false, "Sakura-6205": false, "Sakura-9413": false, "Sakura-5082": false, "Sakura-2367": false,
             "Master Dragon-4912": false, "Master Dragon-7731": false, "Master Dragon-1594": true, "Master Dragon-3820": false, "Master Dragon-6205": false, "Master Dragon-9413": false, "Master Dragon-5082": false, "Master Dragon-2367": false,
@@ -435,7 +443,6 @@ Hier is de **definitieve, complete code**:
             "Uncle Sam-4912": false, "Uncle Sam-7731": false, "Uncle Sam-1594": false, "Uncle Sam-3820": false, "Uncle Sam-6205": false, "Uncle Sam-9413": false, "Uncle Sam-5082": true, "Uncle Sam-2367": false,
             "Django-4912": false, "Django-7731": false, "Django-1594": false, "Django-3820": false, "Django-6205": false, "Django-9413": false, "Django-5082": false, "Django-2367": true,
 
-            // CODE -> VOORWERP
             "4912-Garde": true, "4912-Oude krant": false, "4912-Oude zaklamp": false, "4912-Koffiemok": false, "4912-Strandhanddoek": false, "4912-Omgekeerde Bloempot": false, "4912-Opgerolde Paraplu": false, "4912-Gereedschapskist": false,
             "7731-Garde": false, "7731-Oude krant": true, "7731-Oude zaklamp": false, "7731-Koffiemok": false, "7731-Strandhanddoek": false, "7731-Omgekeerde Bloempot": false, "7731-Opgerolde Paraplu": false, "7731-Gereedschapskist": false,
             "1594-Garde": false, "1594-Oude krant": false, "1594-Oude zaklamp": true, "1594-Koffiemok": false, "1594-Strandhanddoek": false, "1594-Omgekeerde Bloempot": false, "1594-Opgerolde Paraplu": false, "1594-Gereedschapskist": false,
@@ -445,7 +452,6 @@ Hier is de **definitieve, complete code**:
             "5082-Garde": false, "5082-Oude krant": false, "5082-Oude zaklamp": false, "5082-Koffiemok": false, "5082-Strandhanddoek": false, "5082-Omgekeerde Bloempot": false, "5082-Opgerolde Paraplu": true, "5082-Gereedschapskist": false,
             "2367-Garde": false, "2367-Oude krant": false, "2367-Oude zaklamp": false, "2367-Koffiemok": false, "2367-Strandhanddoek": false, "2367-Omgekeerde Bloempot": false, "2367-Opgerolde Paraplu": false, "2367-Gereedschapskist": true,
 
-            // VOORWERP -> LOCATIE
             "Garde-Kelder": true, "Garde-Zolder": false, "Garde-Schuur": false, "Garde-Keuken": false, "Garde-Badkamer": false, "Garde-Tuinhuisje": false, "Garde-De Hal": false, "Garde-De Garage": false,
             "Oude krant-Kelder": false, "Oude krant-Zolder": true, "Oude krant-Schuur": false, "Oude krant-Keuken": false, "Oude krant-Badkamer": false, "Oude krant-Tuinhuisje": false, "Oude krant-De Hal": false, "Oude krant-De Garage": false,
             "Oude zaklamp-Kelder": false, "Oude zaklamp-Zolder": false, "Oude zaklamp-Schuur": true, "Oude zaklamp-Keuken": false, "Oude zaklamp-Badkamer": false, "Oude zaklamp-Tuinhuisje": false, "Oude zaklamp-De Hal": false, "Oude zaklamp-De Garage": false,
@@ -750,7 +756,9 @@ Hier is de **definitieve, complete code**:
 
         buildGrid();
 
-        // --- TOEGANGSVERIFICATIE & WINNAAR LOGICA ---
+        // --- TOEGANGSVERIFICATIE ---
+        let currentUserName = ""; // Sla de ingelogde naam op voor de winnaarscheck
+
         function verifyCode() {
             const code = document.getElementById('codeInput').value.toLowerCase().trim();
             const name = document.getElementById('nameInput').value.toLowerCase().trim();
@@ -762,26 +770,20 @@ Hier is de **definitieve, complete code**:
             const controlPanel = document.getElementById('controlPanel');
 
             if (passportData[key]) {
+                currentUserName = name.charAt(0).toUpperCase() + name.slice(1); // Sla de hoofdletter-naam op
+
                 output.innerHTML = passportData[key];
                 output.style.display = 'flex';
                 matrix.style.display = 'flex';
                 controlPanel.style.display = 'flex';
                 errorMsg.style.display = 'none';
 
-                // Check of er al een winnaar is in Firebase
+                // Laad eventueel al bestaande winnaar
                 winnerRef.once('value').then((snapshot) => {
-                    const currentWinner = snapshot.val();
-                    
-                    // Als er nog geen winnaar is, wordt deze persoon de winnaar
-                    if (!currentWinner) {
-                        const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
-                        winnerRef.set(formattedName).then(() => {
-                            document.getElementById('winnerNameNL').textContent = formattedName;
-                            document.getElementById('winnerNameDE').textContent = formattedName;
-                        });
-                    } else {
-                        document.getElementById('winnerNameNL').textContent = currentWinner;
-                        document.getElementById('winnerNameDE').textContent = currentWinner;
+                    const existingWinner = snapshot.val();
+                    if (existingWinner) {
+                        document.getElementById('winnerNameNL').textContent = existingWinner;
+                        document.getElementById('winnerNameDE').textContent = existingWinner;
                     }
                 });
 
@@ -801,7 +803,7 @@ Hier is de **definitieve, complete code**:
             }
         }
 
-        // --- GRID CONTROLE LOGICA ---
+        // --- GRID CONTROLE LOGICA (DE WINNAAR BEPALING) ---
         function checkGrid() {
             const cells = document.querySelectorAll('.cell.clickable');
             let allCorrect = true;
@@ -812,7 +814,6 @@ Hier is de **definitieve, complete code**:
                 const col = cell.getAttribute('data-col');
                 const key = row + '-' + col;
                 
-                // Huidige staat van de cel ("" = leeg, "–" = kruisje, "+" = vinkje)
                 const currentState = cell.innerHTML;
                 const expectedState = correctAnswers[key];
 
@@ -831,7 +832,18 @@ Hier is de **definitieve, complete code**:
                 msg.style.color = '#10b981';
                 msg.innerHTML = "🎉 PERFECT! De AIVD is verslagen! Druk op '🔒 Dossier Afsluiten' om de overwinning te claimen.";
 
-                // Schakel de controle knop uit zodat ze niet nogmaals kunnen klikken
+                // SCHRIJF DE WINNAAR VAST IN FIREBASE (ALS DIE ER NOG NIET IS)
+                winnerRef.once('value').then((snapshot) => {
+                    const existingWinner = snapshot.val();
+                    if (!existingWinner && currentUserName) {
+                        winnerRef.set(currentUserName).then(() => {
+                            document.getElementById('winnerNameNL').textContent = currentUserName;
+                            document.getElementById('winnerNameDE').textContent = currentUserName;
+                        });
+                    }
+                });
+
+                // Schakel de controle knop uit
                 document.querySelector('.check-btn').disabled = true;
                 document.querySelector('.check-btn').style.opacity = '0.5';
                 document.querySelector('.check-btn').style.cursor = 'default';
@@ -933,15 +945,7 @@ Hier is de **definitieve, complete code**:
             }
         }
 
-        // Laad eventueel al bestaande winnaar bij het opstarten
-        winnerRef.once('value').then((snapshot) => {
-            const existingWinner = snapshot.val();
-            if (existingWinner) {
-                document.getElementById('winnerNameNL').textContent = existingWinner;
-                document.getElementById('winnerNameDE').textContent = existingWinner;
-            }
-        });
-
+        // Start de chat listener
         updateChatView();
     </script>
 </body>
